@@ -1,0 +1,6 @@
+{
+  "epmMaterial": 255,
+  "particleRadius": 0.05,
+  "lb": [-1.0, -1.0, -1.0],
+  "size": [2.0, 2.0, 2.0]
+}

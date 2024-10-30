@@ -1,0 +1,28 @@
+{
+  "PBF": {
+    "Required": {
+      "animationTime": 10,
+      "timeStep": 0.01,
+      "particleRadius": 0.075,
+      "simSpace_lb": [-1, -1, -1],
+      "simSpace_size": [2, 2, 2],
+      "iterationNum": 10,
+      "XSPH_k": 0.02,
+      "fPartRestDensity": 1000
+    },
+    "Optional": {
+      "enable": false,
+      "gravity": [0, -9.81, 0]
+    }
+  },
+  "EXPORT": {
+    "enable": false,
+    "exportPath": "path/to/output",
+    "exportFilePrefix": "fluid_",
+    "exportFileType": "PLY",
+    "exportFps": 35,
+    "exportObjectMaterial": "FLUID",
+    "exportGroupPolicy": "MERGE",
+    "exportObjectsStartIndex": []
+  }
+}

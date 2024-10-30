@@ -20,3 +20,6 @@ build*
 
 # 3rdparty dirs
 Simulator/ThirdParty/vcpkg
+
+# gen files
+ConfigTemplates/RealPath.h

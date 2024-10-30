@@ -1,2 +1,4 @@
 assimp
 spdlog
+glm
+nlohmann-json
