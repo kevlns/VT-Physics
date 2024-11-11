@@ -2,7 +2,6 @@
 
 #include "Logger/Logger.hpp"
 #include "Solvers/PBF/PBFSolver.hpp"
-#include "Solvers/DFSPH/DFSPHSolver.hpp"
 
 namespace VT_Physics {
 
@@ -19,10 +18,6 @@ namespace VT_Physics {
         switch (solverType) {
             case eSolverType::PBF:
                 solver = new pbf::PBFSolver(m_cuda_threadNum_per_block);
-                m_solvers.push_back(solver);
-                break;
-            case eSolverType::DFSPH:
-                solver = new dfsph::DFSPHSolver(m_cuda_threadNum_per_block);
                 m_solvers.push_back(solver);
                 break;
         }
