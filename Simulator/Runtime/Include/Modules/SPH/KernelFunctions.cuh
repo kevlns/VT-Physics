@@ -59,12 +59,12 @@ namespace VT_Physics::sph {
     __host__ __device__ inline float
     surface_tension_C(const float r_norm, const float h) {
         static const float PI = 3.14159265;
-        const float cSigma = 32.f / PI / static_cast<float>(std::pow(h, 9));
+        const float cSigma = 32.f / PI / powf(h, 9);
 
         if (r_norm * 2 > h && r_norm <= h)
-            return cSigma * std::pow(h - r_norm, 3) * std::pow(r_norm, 3);
+            return cSigma * powf(h - r_norm, 3) * powf(r_norm, 3);
         else if (r_norm > 0 && r_norm * 2 <= h)
-            return cSigma * (2 * std::pow(h - r_norm, 3) * std::pow(r_norm, 3) - std::pow(h, 6) / 64);
+            return cSigma * (2 * powf(h - r_norm, 3) * powf(r_norm, 3) - powf(h, 6) / 64);
 
         return 0;
     }
