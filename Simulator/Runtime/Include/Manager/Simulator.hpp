@@ -21,9 +21,9 @@ namespace VT_Physics {
 
         static Simulator &getInstance();
 
-        ObjectManager &getObjectManager();
+        ObjectManager *getObjectManager();
 
-        SolverManager &getSolverManager();
+        SolverManager *getSolverManager();
 
         void terminate();
 

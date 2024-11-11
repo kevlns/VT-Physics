@@ -1,5 +1,7 @@
 #include "Manager/ObjectManager.hpp"
 
+#include <exception>
+
 namespace VT_Physics {
 
     Object *ObjectManager::createObject(ObjectType type) {
@@ -10,7 +12,7 @@ namespace VT_Physics {
     }
 
     void ObjectManager::clear() {
-        for (auto obj: m_objects) {
+        for (auto &obj: m_objects) {
             obj->reset();
             delete obj;
         }
