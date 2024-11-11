@@ -10,5 +10,7 @@ FILE(GLOB_RECURSE RUNTIME_MANAGER_SRC_FILES
 ADD_LIBRARY(vpmanager STATIC ${RUNTIME_MANAGER_HEADER_FILES} ${RUNTIME_MANAGER_SRC_FILES})
 TARGET_LINK_LIBRARIES(vpmanager PUBLIC
         vpcore
-        vppbf)
-ADD_DEPENDENCIES(vpmanager vppbf)
+        vppbf
+        vpdfsph
+)
+ADD_DEPENDENCIES(vpmanager vppbf vpdfsph)
