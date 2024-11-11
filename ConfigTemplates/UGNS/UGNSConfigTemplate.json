@@ -1,9 +1,9 @@
 {
-  "simSpaceLB": [],
-  "simSpaceSize": [],
-  "totalParticleNum": 0,
-  "maxNeighborNum": 60,
-  "cuKernelBlockNum": 1,
+  "simSpaceLB"       : [-1, -1, -1],
+  "simSpaceSize"     : [2, 2, 2],
+  "totalParticleNum" : 0,
+  "maxNeighborNum"   : 60,
+  "cuKernelBlockNum" : 1,
   "cuKernelThreadNum": 1,
-  "gridCellSize": 0.1
+  "gridCellSize"     : 0.1
 }

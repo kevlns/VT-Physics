@@ -26,11 +26,7 @@
     "SolverRequired": {
       "enable": false,
       "exportFps": 35,
-      "exportGroupPolicy": "MERGE",
-      "exportObjectMaterials": [],
-      "exportObjectStartIndex": [],
-      "exportObjectEndIndex": [],
-      "exportFlags": []
+      "exportGroupPolicy": "MERGE"
     }
   }
 }
