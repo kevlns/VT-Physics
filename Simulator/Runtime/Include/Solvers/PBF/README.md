@@ -79,6 +79,6 @@ The Solver includes two main components:
 
 ```
 
-When you use these configs, pls copy template files from `VT-Physics/ConfigTemplates/PBFSolver` to your target directory and modify the parameters.  
+When you use these configs, pls copy template files from `VT-Physics/ConfigTemplates/DFSPHSolver` to your target directory and modify the parameters.  
 
 Related examples can be found in the `VT-Physics/Examples/PBF` directory.
