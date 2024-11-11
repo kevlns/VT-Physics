@@ -1,16 +1,16 @@
 {
-  "Common": {
-    "exportTargetDir": "path/to/output",
+  "Common"        : {
+    "exportTargetDir" : "path/to/output",
     "exportFilePrefix": "obj",
-    "exportFileType": "PLY"
+    "exportFileType"  : "PLY"
   },
   "SolverRequired": {
-    "enable": false,
-    "exportFps": 35,
-    "exportGroupPolicy": "MERGE",
-    "exportObjectMaterials": [],
+    "enable"                : false,
+    "exportFps"             : 35,
+    "exportGroupPolicy"     : "MERGE",
+    "exportObjectMaterials" : [],
     "exportObjectStartIndex": [],
-    "exportObjectEndIndex": [],
-    "exportFlags": []
+    "exportObjectEndIndex"  : [],
+    "exportFlags"           : []
   }
 }

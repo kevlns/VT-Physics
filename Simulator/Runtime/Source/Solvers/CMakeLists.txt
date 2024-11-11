@@ -10,3 +10,4 @@ INCLUDE_DIRECTORIES(
 )
 #===================================== Build Solvers.
 ADD_SUBDIRECTORY(PBF)
+ADD_SUBDIRECTORY(DFSPH)

@@ -9,18 +9,18 @@ int main() {
     auto objectManager = VT_Simulator.getObjectManager();
 
     auto sceneConfig = JsonHandler::loadJson(
-            std::string(VP_EXAMPLES_DIR) + "PBF/Scene-1/Configuration.json");
+            std::string(VP_EXAMPLES_DIR) + "DFSPH/Scene-1/Configuration.json");
 
     /**
      * Create a PBF solver and set solver config ==================================================
      */
-    auto pbfSolver = solverManager->createSolver(PBF);
-    pbfSolver->setConfig(sceneConfig);
+    auto dfsphSolver = solverManager->createSolver(DFSPH);
+    dfsphSolver->setConfig(sceneConfig);
 
     /**
      * Get object component config for PBF simulator ===============================================
      */
-    auto pbfObjComponentConfig = pbfSolver->getSolverObjectComponentConfigTemplate();
+    auto pbfObjComponentConfig = dfsphSolver->getSolverObjectComponentConfigTemplate();
 
     /**
      * Create particle objects for PBF simulator ===================================================
@@ -30,13 +30,13 @@ int main() {
     /**
      * Attach objects to PBF solver ================================================================
      */
-    pbfSolver->attachObjects(objs);
+    dfsphSolver->attachObjects(objs);
 
     /**
      * Run simulation ==============================================================================
      */
-    pbfSolver->run();
-//    pbfSolver->tickNsteps(10);
+    dfsphSolver->run();
+//    dfsphSolver->tickNsteps(10);
 
     /**
      * Terminate simulator ========================================================================

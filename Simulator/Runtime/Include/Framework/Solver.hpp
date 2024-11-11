@@ -19,6 +19,7 @@ namespace VT_Physics {
 
     typedef enum eSolverType : uint8_t {
         PBF = 0,
+        DFSPH = 1,
     } SolverType;
 
     class Solver {

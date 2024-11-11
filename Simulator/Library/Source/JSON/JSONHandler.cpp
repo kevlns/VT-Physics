@@ -31,43 +31,51 @@ namespace VT_Physics {
     }
 
     json JsonHandler::loadExportConfigTemplateJson() {
-        return loadJson(std::string(VP_CONFIG_DIR)+ "ExportConfigTemplate.json");
-    }
-
-    json JsonHandler::loadPBFConfigTemplateJson() {
-        return loadJson(std::string(VP_CONFIG_DIR)+ "PBFSolver/PBFSolverConfigTemplate.json");
-    }
-
-    json JsonHandler::loadPBFObjectComponentConfigTemplateJson() {
-        return loadJson(std::string(VP_CONFIG_DIR)+ "PBFSolver/PBFSolverObjectComponentConfigTemplate.json");
+        return loadJson(std::string(VP_CONFIG_DIR) + "ExportConfigTemplate.json");
     }
 
     json JsonHandler::loadUGNSConfigTemplateJson() {
-        return loadJson(std::string(VP_CONFIG_DIR)+ "UGNS/UGNSConfigTemplate.json");
+        return loadJson(std::string(VP_CONFIG_DIR) + "UGNS/UGNSConfigTemplate.json");
     }
 
     json JsonHandler::loadParticleCubeConfigTemplateJson() {
-        return loadJson(std::string(VP_CONFIG_DIR)+ "ObjectConfig/ParticleCubeConfigTemplate.json");
+        return loadJson(std::string(VP_CONFIG_DIR) + "ObjectConfig/ParticleCubeConfigTemplate.json");
     }
 
     json JsonHandler::loadParticleSphereConfigTemplateJson() {
-        return loadJson(std::string(VP_CONFIG_DIR)+ "ObjectConfig/ParticleSphereConfigTemplate.json");
+        return loadJson(std::string(VP_CONFIG_DIR) + "ObjectConfig/ParticleSphereConfigTemplate.json");
     }
 
     json JsonHandler::loadParticleCylinderConfigTemplateJson() {
-        return loadJson(std::string(VP_CONFIG_DIR)+ "ObjectConfig/ParticleCylinderConfigTemplate.json");
+        return loadJson(std::string(VP_CONFIG_DIR) + "ObjectConfig/ParticleCylinderConfigTemplate.json");
     }
 
     json JsonHandler::loadParticlePlaneConfigTemplateJson() {
-        return loadJson(std::string(VP_CONFIG_DIR)+ "ObjectConfig/ParticlePlaneConfigTemplate.json");
+        return loadJson(std::string(VP_CONFIG_DIR) + "ObjectConfig/ParticlePlaneConfigTemplate.json");
     }
 
     json JsonHandler::loadParticleBoxConfigTemplateJson() {
-        return loadJson(std::string(VP_CONFIG_DIR)+ "ObjectConfig/ParticleBoxConfigTemplate.json");
+        return loadJson(std::string(VP_CONFIG_DIR) + "ObjectConfig/ParticleBoxConfigTemplate.json");
     }
 
     json JsonHandler::loadParticleCommonConfigTemplateJson() {
-        return loadJson(std::string(VP_CONFIG_DIR)+ "ParticleCommonConfigTemplate.json");
+        return loadJson(std::string(VP_CONFIG_DIR) + "ParticleCommonConfigTemplate.json");
+    }
+
+    json JsonHandler::loadPBFConfigTemplateJson() {
+        return loadJson(std::string(VP_CONFIG_DIR) + "PBFSolver/PBFSolverConfigTemplate.json");
+    }
+
+    json JsonHandler::loadPBFObjectComponentConfigTemplateJson() {
+        return loadJson(std::string(VP_CONFIG_DIR) + "PBFSolver/PBFSolverObjectComponentConfigTemplate.json");
+    }
+
+    json JsonHandler::loadDFSPHConfigTemplateJson() {
+        return loadJson(std::string(VP_CONFIG_DIR) + "DFSPHSolver/DFSPHSolverConfigTemplate.json");
+    }
+
+    json JsonHandler::loadDFSPHObjectComponentConfigTemplateJson() {
+        return loadJson(std::string(VP_CONFIG_DIR) + "DFSPHSolver/DFSPHSolverObjectComponentConfigTemplate.json");
     }
 
 }

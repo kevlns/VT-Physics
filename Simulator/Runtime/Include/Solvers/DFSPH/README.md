@@ -1,39 +1,44 @@
-## Positon-Based Fluids
+## Divergence-Free Smoothed Particle Hydrodynamics
 
-This is an implementation of the PBF method. The code is based on the paper "Position-Based Fluids" by
-Miles Macklin and Matthias Müller.  
-**Paper:** <u>2013.TOG."Position Based Fluids", Miles Macklin and Matthias Müller</u>  
-**WebLink:** <u>http://mmacklin.com/pbf_sig_preprint.pdf</u>
+This is an implementation of the DFSPH method. The code is based on the paper
+"Divergence-Free Smoothed Particle Hydrodynamics" by Jan Bender etc.  
+**Paper:** <u>2015.SCA."Divergence-Free Smoothed Particle Hydrodynamics", Jan Bender etc.</u>  
+**WebLink:** <u>https://dl.acm.org/doi/abs/10.1145/2786784.2786796</u>
 
 ### Solver Usage:
 
 The Solver includes two main components:
 
-1. **Solver Config and Export Config:** The configuration json file that holds the solver-level defined parameters.  
+1. **Solver Config and Export Config:** The configuration json file that holds the solver-level defined parameters.
+
 ```json
 {
   "PBF"   : {
     "Required": {
       // Animation time in seconds
-      "animationTime"   : 10,
+      "animationTime"            : 10,
       // Time step in seconds
-      "timeStep"        : 0.01,
+      "timeStep"                 : 0.01,
       // Particle radius
-      "particleRadius"  : 0.075,
+      "particleRadius"           : 0.075,
       // Simulation space lower bound axis: [x,y,z]
-      "simSpaceLB"      : [-1, -1, -1],
+      "simSpaceLB"               : [-1, -1, -1],
       // Simulation space size axis: [x,y,z]
-      "simSpaceSize"    : [2, 2, 2],
+      "simSpaceSize"             : [2, 2, 2],
       // Maximum number of neighbors
-      "maxNeighborNum"  : 60,
-      // Number of PBF iterations
-      "iterationNum"    : 10,
-      // Artificial viscosity coefficient: [0,1)
-      "XSPH_k"          : 0.02,
+      "maxNeighborNum"           : 60,
       // Fluid particle rest density
-      "fPartRestDensity": 1000,
+      "fPartRestDensity"         : 1000,
       // Boundary particle rest density
-      "bPartRestDensity": 1000
+      "bPartRestDensity"         : 1000,
+      // Fluid rest viscosity
+      "fPartRestViscosity"       : 0.01,
+      // Divergence free threshold
+      "divFreeThreshold"         : 1e-4,
+      // Incompressibility threshold
+      "incompThreshold"          : 1e-4,
+      // Surface Tension Coefficient
+      "surfaceTensionCoefficient": 0.001
     },
     "Optional": {
       // Enable the Optional parameters, when true, the optional parameters are used to replace the default values
@@ -65,10 +70,11 @@ The Solver includes two main components:
 ```
 
 2. **Solver Object Component:** The object configuration json file that holds the solver required parameters.
+
 ```json
 {
   // User no need to care and DO NOT modify
-  "solverType"   : 0,
+  "solverType"   : 1,
   // Object export flag, when true, the object will be exported
   "exportFlag"   : false,
   // Object start velocity
@@ -79,6 +85,7 @@ The Solver includes two main components:
 
 ```
 
-When you use these configs, pls copy template files from `VT-Physics/ConfigTemplates/DFSPHSolver` to your target directory and modify the parameters.  
+When you use these configs, pls copy template files from `VT-Physics/ConfigTemplates/DFSPHSolver` to your target
+directory and modify the parameters.
 
-Related examples can be found in the `VT-Physics/Examples/PBF` directory.
+Related examples can be found in the `VT-Physics/Examples/DFSPH` directory.

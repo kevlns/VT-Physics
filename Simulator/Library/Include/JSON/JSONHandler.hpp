@@ -26,6 +26,10 @@ namespace VT_Physics {
 
         static json loadPBFObjectComponentConfigTemplateJson();
 
+        static json loadDFSPHConfigTemplateJson();
+
+        static json loadDFSPHObjectComponentConfigTemplateJson();
+
         static json loadUGNSConfigTemplateJson();
 
         static json loadParticleCubeConfigTemplateJson();
