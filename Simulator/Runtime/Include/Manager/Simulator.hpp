@@ -25,7 +25,9 @@ namespace VT_Physics {
 
         SolverManager &getSolverManager();
 
-        static void terminate();
+        void terminate();
+
+        static void clean();
 
     private:
         ObjectManager m_objectManager;

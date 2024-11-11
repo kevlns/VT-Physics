@@ -23,6 +23,22 @@ namespace VT_Physics {
         static json loadExportConfigTemplateJson();
 
         static json loadPBFConfigTemplateJson();
+
+        static json loadPBFObjectComponentConfigTemplateJson();
+
+        static json loadUGNSConfigTemplateJson();
+
+        static json loadParticleCubeConfigTemplateJson();
+
+        static json loadParticleSphereConfigTemplateJson();
+
+        static json loadParticleCylinderConfigTemplateJson();
+
+        static json loadParticlePlaneConfigTemplateJson();
+
+        static json loadParticleBoxConfigTemplateJson();
+
+        static json loadParticleCommonConfigTemplateJson();
     };
 
 }

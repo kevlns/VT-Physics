@@ -9,13 +9,11 @@
 #include <vector>
 #include <vector_types.h>
 
-#include "nlohmann/json.hpp"
+#include "JSON/JSONHandler.hpp"
 #include "Logger/Logger.hpp"
 #include "Model/ModelHandler.hpp"
 
 namespace VT_Physics {
-
-    using json = nlohmann::json;
 
     typedef enum eObjectType : uint8_t {
         Particle_Common = 0,

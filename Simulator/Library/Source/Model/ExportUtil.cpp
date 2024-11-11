@@ -11,17 +11,12 @@ namespace VT_Physics {
                                 const std::vector<float3> &color,
                                 const std::vector<float> &phase) {
         LOG_WARNING("Exporting data...");
-        if (exportConfig["SolverRequired"]["enable"]) {
-            // TODO
+        if (supportedFileType.count(exportConfig["Common"]["exportFileType"]) != 0) {
+            if (exportConfig["Common"]["exportFileType"] == "PLY")
+                exportAsPly(exportConfig["Common"], pos, color, phase);
         } else {
-            auto exportCommonConfig = exportConfig["Common"];
-            if (supportedFileType.count(exportCommonConfig["exportFileType"]) != 0) {
-                if (exportCommonConfig["exportFileType"] == "PLY")
-                    exportAsPly(exportCommonConfig, pos, color, phase);
-            } else {
-                LOG_ERROR("Export type not supported.");
-                return;
-            }
+            LOG_ERROR("Export type not supported.");
+            return;
         }
     }
 
@@ -89,9 +84,19 @@ namespace VT_Physics {
     }
 
     bool ExportUtil::checkConfig(const json &config) {
-        for (const auto &key: exportConfigKeys) {
-            if (!config.contains(key)) {
-                LOG_ERROR("Export Config missing key: " + key);
+        const auto &common_keys = config["Common"];
+        const auto &solverRequired_keys = config["SolverRequired"];
+
+        for (const auto &key: exportConfigRequiredCommonKeys) {
+            if (!common_keys.contains(key)) {
+                LOG_ERROR("Export Common Config missing key: " + key);
+                return false;
+            }
+        }
+
+        for (const auto &key: exportConfigRequiredSolverRequiredKeys) {
+            if (!solverRequired_keys.contains(key)) {
+                LOG_ERROR("Export SolverRequired Config missing key: " + key);
                 return false;
             }
         }

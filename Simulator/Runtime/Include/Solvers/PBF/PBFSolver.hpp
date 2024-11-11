@@ -7,26 +7,42 @@
 #define VT_PHYSICS_PBFSOLVER_HPP
 
 #include <vector>
+#include <set>
 
 #include "Framework/Solver.hpp"
 #include "PBFrtData.hpp"
+#include "Modules/NeighborSearch/UGNS/UniformGridNeighborSearch.hpp"
 
 namespace VT_Physics::pbf {
 
-    static const std::vector<std::string> PBFConfigRequiredKeys = {
+    inline const std::vector<std::string> PBFConfigRequiredKeys = {
             "animationTime",
             "timeStep",
             "particleRadius",
-            "simSpace_lb",
-            "simSpace_size",
+            "simSpaceLB",
+            "simSpaceSize",
+            "maxNeighborNum",
             "iterationNum",
             "XSPH_k",
-            "fPartRestDensity"
+            "fPartRestDensity",
+            "bPartRestDensity"
     };
 
-    static const std::vector<std::string> PBFConfigOptionalKeys = {
+    inline const std::vector<std::string> PBFConfigOptionalKeys = {
             "enable",
             "gravity",
+    };
+
+    inline const std::vector<std::string> PBFSolverObjectComponentConfigRequiredKeys = {
+            "solverType",
+            "exportFlag",
+            "velocityStart",
+            "colorStart",
+    };
+
+    inline const std::set<uint8_t> PBFSolverSupportedMaterials = {
+            EPM_FLUID,
+            EPM_BOUNDARY
     };
 
     class PBFSolver : public Solver {
@@ -37,19 +53,23 @@ namespace VT_Physics::pbf {
 
         virtual ~PBFSolver() override = default;
 
-        virtual json getDefaultConfig() const override;
+        virtual json getSolverConfigTemplate() const override;
 
         virtual bool setConfig(json config) override;
 
-        virtual bool setConfigByFile(std::string solver_config) override;
+        virtual bool setConfigByFile(std::string config_file) override;
+
+        virtual json getSolverObjectComponentConfigTemplate() override;
 
         virtual bool initialize() override;
 
-        virtual bool run(float simTime) override;
+        virtual bool run() override;
 
         virtual bool tickNsteps(uint32_t n) override;
 
         virtual bool attachObject(Object *obj) override;
+
+        virtual bool attachObjects(std::vector<Object *> objs) override;
 
         virtual bool reset() override;
 
@@ -61,28 +81,24 @@ namespace VT_Physics::pbf {
         virtual bool checkConfig() const override;
 
     private:
-        void swizzle();
-
         void exportData();
 
     private:
         json m_configData;
-        uint32_t m_cuBlockNum{0};
-        uint32_t m_cuThreadNum{0};
         Data *m_host_data{nullptr};
         Data *m_device_data{nullptr};
         bool m_isInitialized{false};
         bool m_isCrashed{false};
         uint32_t m_frameCount{0};
         uint32_t m_outputFrameCount{0};
-        bool m_exportFlag{false};
-        std::vector<Object *> m_attached_obj;
+        bool m_doExportFlag{false};
+        std::vector<Object *> m_attached_objs;
+        UGNS::UniformGirdNeighborSearcher m_neighborSearcher;
 
         std::vector<float3> m_host_pos;
         std::vector<float3> m_host_vel;
-        std::vector<ParticleMaterial> m_host_mat;
+        std::vector<int> m_host_mat;
         std::vector<float3> m_host_color;
-        json m_defaultConfig;
     };
 }
 

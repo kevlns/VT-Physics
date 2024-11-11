@@ -1,10 +1,13 @@
+#include <utility>
+
 #include "Framework/Object.hpp"
 
 namespace VT_Physics {
 
     Object::Object(long long int id) {
         m_id = id;
-        LOG_INFO("Object: " + std::to_string(m_id) + " Created.")
+        m_name = "obj_" + std::to_string(m_id);
+        LOG_INFO("Object: " + m_name + " Created.")
     }
 
     Object::~Object() {
@@ -40,9 +43,30 @@ namespace VT_Physics {
     }
 
     void Object::reset() {
-        m_objectComponentConfig = {};
+        m_objectComponentConfig.clear();
+        m_solverSpecificComponentConfig.clear();
         if (m_objectTypeComponent)
             delete m_objectTypeComponent;
+    }
+
+    void Object::attachSpecificSolverObjectComponentConfig(json specificSolverObjectComponentConfig) {
+        m_solverSpecificComponentConfig = std::move(specificSolverObjectComponentConfig);
+    }
+
+    json &Object::getSolverObjectComponentConfig() {
+        return m_solverSpecificComponentConfig;
+    }
+
+    long long Object::getID() const {
+        return m_id;
+    }
+
+    void Object::rename(std::string newName) {
+        m_name = std::move(newName);
+    }
+
+    std::string Object::getName() const {
+        return m_name;
     }
 
 }

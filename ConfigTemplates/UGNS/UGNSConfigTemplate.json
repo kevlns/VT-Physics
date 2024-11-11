@@ -1,0 +1,9 @@
+{
+  "simSpaceLB": [],
+  "simSpaceSize": [],
+  "totalParticleNum": 0,
+  "maxNeighborNum": 60,
+  "cuKernelBlockNum": 1,
+  "cuKernelThreadNum": 1,
+  "gridCellSize": 0.1
+}

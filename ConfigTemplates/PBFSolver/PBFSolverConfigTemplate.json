@@ -4,11 +4,13 @@
       "animationTime": 10,
       "timeStep": 0.01,
       "particleRadius": 0.075,
-      "simSpace_lb": [-1, -1, -1],
-      "simSpace_size": [2, 2, 2],
+      "simSpaceLB": [-1, -1, -1],
+      "simSpaceSize": [2, 2, 2],
+      "maxNeighborNum": 60,
       "iterationNum": 10,
       "XSPH_k": 0.02,
-      "fPartRestDensity": 1000
+      "fPartRestDensity": 1000,
+      "bPartRestDensity": 1000
     },
     "Optional": {
       "enable": false,
@@ -25,9 +27,10 @@
       "enable": false,
       "exportFps": 35,
       "exportGroupPolicy": "MERGE",
-      "exportTargetObjectMaterialList": [],
-      "exportSourceObjectMaterialList": [],
-      "exportObjectStartIndex": []
+      "exportObjectMaterials": [],
+      "exportObjectStartIndex": [],
+      "exportObjectEndIndex": [],
+      "exportFlags": []
     }
   }
 }

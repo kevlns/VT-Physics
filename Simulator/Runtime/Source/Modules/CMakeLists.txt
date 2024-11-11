@@ -1,4 +1,7 @@
+PROJECT(VP-Modules)
+
 FIND_PACKAGE(CUDAToolkit)
+FIND_PACKAGE(nlohmann_json CONFIG REQUIRED)
 
 INCLUDE_DIRECTORIES(
         ${VP_LIB_ROOT}/Include
@@ -6,9 +9,5 @@ INCLUDE_DIRECTORIES(
         ${VP_CONFIG_ROOT}
         ${CUDAToolkit_INCLUDE_DIRS}
 )
-
 #===================================== Build Components.
-ADD_SUBDIRECTORY(Framework)
-ADD_SUBDIRECTORY(Modules)
-ADD_SUBDIRECTORY(Solvers)
-ADD_SUBDIRECTORY(Manager)
+ADD_SUBDIRECTORY(NeighborSearch)

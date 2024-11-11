@@ -10,18 +10,16 @@
 #include <string>
 
 #include "Framework/Object.hpp"
+#include "Framework/Material.hpp"
 #include "nlohmann/json.hpp"
 
 namespace VT_Physics {
 
     using json = nlohmann::json;
 
-    enum eSolverType {
-        PBF
-    };
-
-    struct SolverConfig {
-    };
+    typedef enum eSolverType : uint8_t {
+        PBF = 0,
+    } SolverType;
 
     class Solver {
     public:
@@ -29,17 +27,21 @@ namespace VT_Physics {
 
         virtual ~Solver() = 0;
 
-        virtual json getDefaultConfig() const = 0;
+        virtual json getSolverConfigTemplate() const = 0;
 
         virtual bool setConfig(json config) = 0;
 
-        virtual bool setConfigByFile(std::string solver_config) = 0;
+        virtual bool setConfigByFile(std::string config_file) = 0;
 
-        virtual bool run(float simTime) = 0;
+        virtual json getSolverObjectComponentConfigTemplate() = 0;
+
+        virtual bool run() = 0;
 
         [[maybe_unused]] virtual bool tickNsteps(uint32_t n) = 0;
 
         virtual bool attachObject(Object *obj) = 0;
+
+        virtual bool attachObjects(std::vector<Object *> objs) = 0;
 
         virtual bool initialize() = 0;
 

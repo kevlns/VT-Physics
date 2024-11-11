@@ -1,5 +1,7 @@
 INCLUDE_DIRECTORIES(
         ${VP_SOURCE_ROOT}
-        ${VP_RUNTIME_ROOT}/Include)
+        ${VP_RUNTIME_ROOT}/Include
+        ${VP_CONFIG_ROOT}
+)
 
-ADD_SUBDIRECTORY(pbf_test)
+ADD_SUBDIRECTORY(PBF)

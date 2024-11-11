@@ -4,7 +4,7 @@ namespace VT_Physics {
 
     Solver::~Solver() {}
 
-    json Solver::getDefaultConfig() const{
+    json Solver::getSolverConfigTemplate() const {
         return {};
     }
 
@@ -12,11 +12,15 @@ namespace VT_Physics {
         return false;
     }
 
-    bool Solver::setConfigByFile(std::string solver_config) {
+    bool Solver::setConfigByFile(std::string config_file) {
         return false;
     }
 
-    bool Solver::run(float simTime) {
+    json Solver::getSolverObjectComponentConfigTemplate() {
+        return {};
+    }
+
+    bool Solver::run() {
         return false;
     }
 
@@ -25,6 +29,10 @@ namespace VT_Physics {
     }
 
     bool Solver::attachObject(Object *obj) {
+        return false;
+    }
+
+    bool Solver::attachObjects(std::vector<Object *> objs) {
         return false;
     }
 

@@ -8,8 +8,9 @@
     "enable": false,
     "exportFps": 35,
     "exportGroupPolicy": "MERGE",
-    "exportTargetObjectMaterialList": [],
-    "exportSourceObjectMaterialList": [],
-    "exportObjectStartIndex": []
+    "exportObjectMaterials": [],
+    "exportObjectStartIndex": [],
+    "exportObjectEndIndex": [],
+    "exportFlags": []
   }
 }

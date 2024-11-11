@@ -17,15 +17,20 @@ namespace VT_Physics {
 
     using json = nlohmann::json;
 
-    inline const std::vector<std::string> exportConfigKeys = {
-            "enable",
-            "exportPath",
+    inline const std::vector<std::string> exportConfigRequiredCommonKeys = {
+            "exportTargetDir",
             "exportFilePrefix",
-            "exportFileType",
+            "exportFileType"
+    };
+
+    inline const std::vector<std::string> exportConfigRequiredSolverRequiredKeys = {
+            "enable",
             "exportFps",
-            "exportObjectMaterial",
             "exportGroupPolicy",
-            "exportObjectsStartIndex"
+            "exportObjectMaterials",
+            "exportObjectStartIndex",
+            "exportObjectEndIndex",
+            "exportFlags"
     };
 
     inline const std::set<std::string> supportedFileType = {
@@ -34,7 +39,7 @@ namespace VT_Physics {
 
     inline const std::set<std::string> supportedExportPolicy = {
             "MERGE",
-            "SEPARATE"
+            "SPLIT"
     };
 
     class ExportUtil {
@@ -47,8 +52,9 @@ namespace VT_Physics {
         static void exportData(const json &exportConfig,
                                std::vector<float> &pos);
 
-    private:
         static bool checkConfig(const json &config);
+
+    private:
 
         static void exportAsPly(const json &exportConfig,
                                 const std::vector<float3> &pos,

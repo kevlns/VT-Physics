@@ -16,6 +16,11 @@ namespace VT_Physics {
     }
 
     void Simulator::terminate() {
+        m_solverManager.clear();
+        m_objectManager.clear();
+    }
+
+    void Simulator::clean() {
         // free static object component resources
         for (auto ptr: componentTemplates)
             delete ptr;

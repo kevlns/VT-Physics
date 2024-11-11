@@ -1,0 +1,67 @@
+{
+  "PBF": {
+    "Required": {
+      "animationTime": 5,
+      "timeStep": 0.01,
+      "particleRadius": 0.05,
+      "simSpaceLB": [-10, -10, -10],
+      "simSpaceSize": [20, 20, 20],
+      "maxNeighborNum": 60,
+      "iterationNum": 10,
+      "XSPH_k": 0.02,
+      "fPartRestDensity": 1000,
+      "bPartRestDensity": 2000
+    },
+    "Optional": {
+      "enable": false,
+      "gravity": [0, -9.81, 0]
+    }
+  },
+  "EXPORT": {
+    "Common": {
+      "exportTargetDir": "F:\\DataSet.Research\\VP-Examples\\PBF",
+      "exportFilePrefix": "obj",
+      "exportFileType": "PLY"
+    },
+    "SolverRequired": {
+      "enable": true,
+      "exportFps": 35,
+      "exportGroupPolicy": "MERGE"
+    }
+  },
+  "OBJECTS": [
+    {
+      "name": "cube",
+      "objTransferType": 2,
+      "ObjectComponentConfig": {
+        "epmMaterial": 0,
+        "particleRadius": 0.05,
+        "lb": [-1, -1, -1],
+        "size": [2, 2, 2]
+      },
+      "SolverObjectComponentConfig": {
+        "solverType": 0,
+        "exportFlag": true,
+        "velocityStart": [0, 0, 0],
+        "colorStart": [0, 0, 1]
+      }
+    },
+    {
+      "name": "box",
+      "objTransferType": 5,
+      "ObjectComponentConfig": {
+        "epmMaterial": 1,
+        "particleRadius": 0.05,
+        "lb": [-3, -2.5, -3],
+        "size": [6, 6, 6],
+        "layerNum": 1
+      },
+      "SolverObjectComponentConfig": {
+        "solverType": 0,
+        "exportFlag": false,
+        "velocityStart": [0, 0, 0],
+        "colorStart": [0, 0, 0]
+      }
+    }
+  ]
+}

@@ -25,7 +25,17 @@ namespace VT_Physics {
 
         json &getObjectComponentConfig();
 
+        void attachSpecificSolverObjectComponentConfig(json specificSolverObjectComponentConfig);
+
+        json &getSolverObjectComponentConfig();
+
         ObjectTypeComponent *getObjectComponent();
+
+        long long getID() const;
+
+        void rename(std::string newName);
+
+        std::string getName() const;
 
         bool update();
 
@@ -33,8 +43,10 @@ namespace VT_Physics {
 
     private:
         long long m_id;
+        std::string m_name;
         ObjectTypeComponent *m_objectTypeComponent{nullptr};
-        json m_objectComponentConfig;
+        json m_objectComponentConfig{};
+        json m_solverSpecificComponentConfig{};
     };
 
 }

@@ -13,12 +13,6 @@ namespace VT_Physics {
         m_cuda_threadNum_per_block = prop.maxThreadsPerBlock;
     }
 
-    SolverManager::~SolverManager() {
-        for (auto &solver: m_solvers) {
-            solver->destroy();
-        }
-    }
-
     Solver *SolverManager::createSolver(eSolverType solverType) {
         Solver *solver{nullptr};
         switch (solverType) {
@@ -28,6 +22,14 @@ namespace VT_Physics {
                 break;
         }
         return solver;
+    }
+
+    void SolverManager::clear() {
+        for (auto solver: m_solvers) {
+            solver->destroy();
+            delete solver;
+        }
+        m_solvers.clear();
     }
 
 }

@@ -20,9 +20,9 @@ namespace VT_Physics {
     public:
         SolverManager();
 
-        ~SolverManager();
-
         Solver *createSolver(eSolverType solverType);
+
+        void clear();
 
     private:
         uint32_t m_cuda_threadNum_per_block{1024};

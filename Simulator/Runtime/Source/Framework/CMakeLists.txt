@@ -16,4 +16,4 @@ TARGET_INCLUDE_DIRECTORIES(vpcore PUBLIC
         ${VP_LIB_ROOT}/Include
         ${CUDAToolkit_INCLUDE_DIRS}
         ${NLOHMANN_JSON_INCLUDE_DIRS})
-ADD_DEPENDENCIES(vpcore vpjson vplogger)
+ADD_DEPENDENCIES(vpcore vpjson vpmodel vplogger)
