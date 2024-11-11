@@ -1,5 +1,5 @@
 {
-  "DFSPH"   : {
+  "DFSPH" : {
     "Required": {
       "animationTime"            : 10,
       "timeStep"                 : 0.01,
