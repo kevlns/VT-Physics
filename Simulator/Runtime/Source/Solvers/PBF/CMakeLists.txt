@@ -1,0 +1,17 @@
+PROJECT(VPSolver-pbf)
+
+FIND_PACKAGE(CUDAToolkit)
+FIND_PACKAGE(nlohmann_json CONFIG REQUIRED)
+
+FILE(GLOB_RECURSE PBF_FILES
+        ${VP_RUNTIME_ROOT}/Include/Solvers/PBF/*.hpp
+        ${VP_RUNTIME_ROOT}/Source/Solvers/PBF/*.cpp
+        ${VP_RUNTIME_ROOT}/Source/Solvers/PBF/*.cuh
+        ${VP_RUNTIME_ROOT}/Source/Solvers/PBF/*.cu
+)
+
+ADD_LIBRARY(vppbf STATIC ${PBF_FILES})
+TARGET_LINK_LIBRARIES(vppbf PRIVATE vpcore vpugns)
+TARGET_INCLUDE_DIRECTORIES(vppbf PRIVATE ${VP_LIB_ROOT}/Include ${NLOHMANN_JSON_INCLUDE_DIRS})
+ADD_DEPENDENCIES(vppbf vpcore vpugns)
+ADD_COMPILE_OPTIONS("/utf-8")

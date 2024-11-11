@@ -10,3 +10,16 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 CMakeUserPresets.json
+
+# build dirs
+cmake-build*
+build*
+
+# ide files
+.idea
+
+# 3rdparty dirs
+Simulator/ThirdParty/vcpkg
+
+# gen files
+ConfigTemplates/RealPath.h

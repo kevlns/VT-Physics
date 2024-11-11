@@ -1,0 +1,15 @@
+/**
+ * @brief Todo
+ * @date 2024/10/29
+ */
+
+#ifndef VT_PHYSICS_PATH_H_IN_HPP
+#define VT_PHYSICS_PATH_H_IN_HPP
+
+#define VP_SRC_DIR "@VP_SOURCE_ROOT@/"
+#define VP_RT_SRC_DIR "@VP_RUNTIME_ROOT@/"
+#define VP_LIB_SRC_DIR "@VP_LIB_ROOT@/"
+#define VP_CONFIG_DIR "@VP_CONFIG_ROOT@/"
+#define VP_SOLVERS_INCLUDE_DIR "@VP_RUNTIME_ROOT@/Include/Solvers/"
+
+#endif //VT_PHYSICS_PATH_H_IN_HPP

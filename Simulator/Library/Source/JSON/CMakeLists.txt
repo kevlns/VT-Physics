@@ -1,0 +1,13 @@
+PROJECT(VPLibs-json)
+
+FIND_PACKAGE(nlohmann_json CONFIG REQUIRED)
+
+FILE(GLOB_RECURSE LIB_JSON_FILES
+        ${VP_LIB_ROOT}/Include/JSON/*.hpp
+        ${VP_LIB_ROOT}/Source/JSON/*.cpp
+)
+
+ADD_LIBRARY(vpjson STATIC ${LIB_JSON_FILES})
+TARGET_LINK_LIBRARIES(vpjson PUBLIC nlohmann_json::nlohmann_json)
+TARGET_LINK_LIBRARIES(vpjson PRIVATE vplogger)
+TARGET_COMPILE_OPTIONS(vpjson PRIVATE /utf-8)

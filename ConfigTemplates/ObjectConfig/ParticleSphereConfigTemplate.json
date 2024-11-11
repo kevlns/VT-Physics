@@ -1,0 +1,7 @@
+{
+  "objTransferType": 1,
+  "epmMaterial"    : 255,
+  "particleRadius" : 0.05000000074505806,
+  "volumeCenter"   : [0.0, 0.0, 0.0],
+  "volumeRadius"   : 1.0
+}
