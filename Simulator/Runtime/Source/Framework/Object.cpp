@@ -11,8 +11,6 @@ namespace VT_Physics {
     }
 
     Object::~Object() {
-        if (m_objectTypeComponent)
-            delete m_objectTypeComponent;
         LOG_INFO("Object: " + std::to_string(m_id) + " Destroyed.");
     }
 
@@ -45,8 +43,10 @@ namespace VT_Physics {
     void Object::reset() {
         m_objectComponentConfig.clear();
         m_solverSpecificComponentConfig.clear();
-        if (m_objectTypeComponent)
+        if (m_objectTypeComponent) {
             delete m_objectTypeComponent;
+            m_objectTypeComponent = nullptr;
+        }
     }
 
     void Object::attachSpecificSolverObjectComponentConfig(json specificSolverObjectComponentConfig) {

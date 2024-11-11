@@ -7,12 +7,12 @@ namespace VT_Physics {
         return instance;
     }
 
-    ObjectManager &Simulator::getObjectManager() {
-        return m_objectManager;
+    ObjectManager* Simulator::getObjectManager() {
+        return &m_objectManager;
     }
 
-    SolverManager &Simulator::getSolverManager() {
-        return m_solverManager;
+    SolverManager* Simulator::getSolverManager() {
+        return &m_solverManager;
     }
 
     void Simulator::terminate() {

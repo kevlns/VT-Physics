@@ -16,7 +16,7 @@ int main() {
     /**
      * Create a PBF solver and set solver config ==================================================
      */
-    auto pbfSolver = solverManager.createSolver(PBF);
+    auto pbfSolver = solverManager->createSolver(PBF);
     pbfSolver->setConfig(sceneConfig);
 
     /**
@@ -27,7 +27,7 @@ int main() {
     /**
      * Create particle objects for PBF simulator ===================================================
      */
-    auto objs = objectManager.createObjectsFromJson(sceneConfig);
+    auto objs = objectManager->createObjectsFromJson(sceneConfig);
 
     /**
      * Attach objects to PBF solver ================================================================

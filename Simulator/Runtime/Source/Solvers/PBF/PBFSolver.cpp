@@ -353,19 +353,12 @@ namespace VT_Physics::pbf {
                      m_device_data,
                      m_neighborSearcher.m_config_cuData,
                      m_neighborSearcher.m_params_cuData);
-
-            std::vector<float> dx_tmp(m_host_data->particle_num);
-            cudaMemcpy(dx_tmp.data(), m_host_data->density_sph, m_host_data->particle_num * sizeof(float),
-                       cudaMemcpyDeviceToHost);
         }
 
         post_correct(m_host_data,
                      m_device_data,
                      m_neighborSearcher.m_config_cuData,
                      m_neighborSearcher.m_params_cuData);
-
-        std::vector<float3> dx_tmp(m_host_data->particle_num);
-        cudaMemcpy(dx_tmp.data(), m_host_data->dx, m_host_data->particle_num * sizeof(float3), cudaMemcpyDeviceToHost);
 
         m_host_data->cur_simTime += m_host_data->dt;
         m_frameCount++;

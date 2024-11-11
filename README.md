@@ -66,4 +66,4 @@ cmake --build build --config Debug
 We provide simple examples associated with each physical solver. You can run the examples with a little modification to
 test the solver. The examples are located in the `VT-Physics/Examples` directory.
 
-For each solver, we provide a `ReadME.md` file to introduce the solver and its usage, which you can find in the "VT-Physics/Simulator/Runtime/Include/Solvers" directory.
+For each solver, we provide a `README.md` file to introduce the solver and its usage, which you can find in the "VT-Physics/Simulator/Runtime/Include/Solvers" directory.

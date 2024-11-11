@@ -13,7 +13,7 @@ int main() {
     /**
      * Create a PBF solver and set solver config ==================================================
      */
-    auto pbfSolver = solverManager.createSolver(PBF);
+    auto pbfSolver = solverManager->createSolver(PBF);
     auto pbf_config = pbfSolver->getSolverConfigTemplate();
     pbf_config["PBF"]["Required"]["animationTime"] = 5.0f;
     pbf_config["PBF"]["Required"]["timeStep"] = 0.01f;
@@ -37,7 +37,7 @@ int main() {
     /**
      * Create particle objects for PBF simulator ===================================================
      */
-    auto cube = objectManager.createObject(Particle_Cube);
+    auto cube = objectManager->createObject(Particle_Cube);
     auto &cube_config = cube->getObjectComponentConfig();
     cube_config["epmMaterial"] = EPM_FLUID;
     cube_config["particleRadius"] = pbf_config["PBF"]["Required"]["particleRadius"];
@@ -51,7 +51,7 @@ int main() {
     cube->attachSpecificSolverObjectComponentConfig(cube_pbfObjComponentConfig);
     cube->update();
 
-    auto box = objectManager.createObject(Particle_Box);
+    auto box = objectManager->createObject(Particle_Box);
     auto &box_config = box->getObjectComponentConfig();
     box_config["epmMaterial"] = EPM_BOUNDARY;
     box_config["particleRadius"] = pbf_config["PBF"]["Required"]["particleRadius"];
