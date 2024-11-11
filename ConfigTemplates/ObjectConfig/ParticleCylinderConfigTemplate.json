@@ -1,7 +1,7 @@
 {
-  "objTransferType": 3,
-  "epmMaterial": 255,
-  "center": [0.0, 0.0, 0.0],
+  "objTransferType" : 3,
+  "epmMaterial"     : 255,
+  "center"          : [0.0, 0.0, 0.0],
   "bottomAreaRadius": 1.0,
-  "height": 2.0
+  "height"          : 2.0
 }
