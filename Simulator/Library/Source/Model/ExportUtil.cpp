@@ -33,6 +33,10 @@ namespace VT_Physics {
         auto name = exportConfig["exportFilePrefix"].get<std::string>();
         const bool exportColor = !color.empty();
         const bool exportPhase = !phase.empty();
+        auto phaseNum = 0;
+        if (exportPhase) {
+            phaseNum = exportConfig["exportPhaseNum"].get<int>();
+        }
 
 #ifdef WIN32
         size_t fPos = 0;
@@ -61,12 +65,10 @@ namespace VT_Physics {
             target_file << "property uchar blue" << std::endl;
         }
 
-        // TODO if multiphase, set phase num from config
-        //        if (!phase.empty()) {
-        //            target_file << "property float p1" << std::endl;
-        //            target_file << "property float p2" << std::endl;
-        //            target_file << "property float p3" << std::endl;
-        //        }
+        if (exportPhase) {
+            for (int i = 0; i < phaseNum; ++i)
+                target_file << "property float p" << i + 1 << std::endl;
+        }
 
         target_file << "end_header\n";
 
@@ -74,8 +76,10 @@ namespace VT_Physics {
             target_file << pos[i].x << " " << pos[i].y << " " << pos[i].z << " ";
             if (exportColor)
                 target_file << color[i].x << " " << color[i].y << " " << color[i].z << " ";
-            // TODO export phase
-            // if (exportPhase) threadFile << phase[ind] << " ";
+            if (exportPhase) {
+                for (int j = 0; j < phaseNum; ++j)
+                    target_file << phase[i * phaseNum + j] << " ";
+            }
             target_file << "\n";
         }
 

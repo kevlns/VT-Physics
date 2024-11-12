@@ -13,12 +13,11 @@ namespace VT_Physics {
         cudaMemcpy(data.data(), d_ptr, raw_size * sizeof(T), cudaMemcpyDeviceToHost);
 
         T mean = data[0] * 0;
-        for (int i = 0; i < raw_size; ++i) {
-            if (i >= target_start && i < target_start + target_size)
-                mean += data[i];
+        for (int i = target_start; i < target_start + target_size; ++i) {
+            mean += data[i];
         }
 
-        return mean / data.size();
+        return mean / target_size;
     }
 
     // explicit template instance
