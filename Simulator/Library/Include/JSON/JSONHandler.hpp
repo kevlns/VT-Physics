@@ -30,6 +30,10 @@ namespace VT_Physics {
 
         static json loadDFSPHObjectComponentConfigTemplateJson();
 
+        static json loadIMMConfigTemplateJson();
+
+        static json loadIMMObjectComponentConfigTemplateJson();
+
         static json loadUGNSConfigTemplateJson();
 
         static json loadParticleCubeConfigTemplateJson();

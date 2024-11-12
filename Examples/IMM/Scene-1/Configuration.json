@@ -1,0 +1,71 @@
+{
+  "IMM"    : {
+    "Required": {
+      "animationTime"                : 5,
+      "timeStep"                     : 0.008,
+      "particleRadius"               : 0.05,
+      "simSpaceLB"                   : [-10, -10, -10],
+      "simSpaceSize"                 : [20, 20, 20],
+      "maxNeighborNum"               : 60,
+      "divFreeThreshold"             : 1e-4,
+      "incompThreshold"              : 1e-4,
+      "surfaceTensionCoefficient"    : 0.001,
+      "diffusionCoefficientCf"       : 0.1,
+      "momentumExchangeCoefficientCd": 0.5,
+      "phaseRestDensity"             : [1000, 1100, 1200],
+      "phaseRestViscosity"           : [0.01, 0.01, 0.01],
+      "phaseRestColor"               : [[255, 0, 0], [0, 255, 0], [0, 0, 255]]
+    },
+    "Optional": {
+      "enable" : false,
+      "gravity": [0, -9.81, 0]
+    }
+  },
+  "EXPORT" : {
+    "Common"        : {
+      "exportTargetDir" : "F:\\DataSet.Research\\VP-Examples\\IMM",
+      "exportFilePrefix": "obj",
+      "exportFileType"  : "PLY"
+    },
+    "SolverRequired": {
+      "enable"           : true,
+      "exportFps"        : 35,
+      "exportGroupPolicy": "MERGE"
+    }
+  },
+  "OBJECTS": [
+    {
+      "name"                       : "cube",
+      "objTransferType"            : 2,
+      "ObjectComponentConfig"      : {
+        "epmMaterial"   : 0,
+        "particleRadius": 0.05,
+        "lb"            : [-1, -1, -1],
+        "size"          : [2, 2, 2]
+      },
+      "SolverObjectComponentConfig": {
+        "solverType"   : 2,
+        "exportFlag"   : true,
+        "velocityStart": [0, 0, 0],
+        "phaseFraction": [0.3, 0.3, 0.4]
+      }
+    },
+    {
+      "name"                       : "box",
+      "objTransferType"            : 5,
+      "ObjectComponentConfig"      : {
+        "epmMaterial"   : 1,
+        "particleRadius": 0.05,
+        "lb"            : [-2, -2, -2],
+        "size"          : [4, 4, 4],
+        "layerNum"      : 1
+      },
+      "SolverObjectComponentConfig": {
+        "solverType"   : 2,
+        "exportFlag"   : false,
+        "velocityStart": [0, 0, 0],
+        "phaseFraction": [0, 0, 0]
+      }
+    }
+  ]
+}

@@ -12,5 +12,6 @@ TARGET_LINK_LIBRARIES(vpmanager PUBLIC
         vpcore
         vppbf
         vpdfsph
+        vpimm
 )
-ADD_DEPENDENCIES(vpmanager vppbf vpdfsph)
+ADD_DEPENDENCIES(vpmanager vppbf vpdfsph vpimm)
