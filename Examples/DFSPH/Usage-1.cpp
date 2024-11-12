@@ -1,7 +1,5 @@
 #include "Manager/Simulator.hpp"
 
-#include <iostream>
-
 using namespace VT_Physics;
 
 int main() {
@@ -48,7 +46,6 @@ int main() {
     auto cube_dfsphObjComponentConfig = dfsphObjComponentConfig;
     cube_dfsphObjComponentConfig["exportFlag"] = true;
     cube_dfsphObjComponentConfig["velocityStart"] = {0, 0, 0};
-    cube_dfsphObjComponentConfig["accelerationStart"] = {0, 0, 0};
     cube_dfsphObjComponentConfig["colorStart"] = {0, 1, 0};
     cube->attachSpecificSolverObjectComponentConfig(cube_dfsphObjComponentConfig);
     cube->update();
