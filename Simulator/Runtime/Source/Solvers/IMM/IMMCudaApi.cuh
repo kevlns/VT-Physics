@@ -3,8 +3,8 @@
  * @date 2024/11/7
  */
 
-#ifndef VT_PHYSICS_PBFCUDAAPI_CUH
-#define VT_PHYSICS_PBFCUDAAPI_CUH
+#ifndef VT_PHYSICS_IMMCUDAAPI_CUH
+#define VT_PHYSICS_IMMCUDAAPI_CUH
 
 #include "Solvers/IMM/IMMrtData.hpp"
 #include "Modules/NeighborSearch/UGNS/UniformGridNeighborSearch.hpp"
@@ -83,4 +83,4 @@ namespace VT_Physics::imm {
                  UGNS::UniformGirdNeighborSearcherParams *d_nsParams);
 }
 
-#endif //VT_PHYSICS_PBFCUDAAPI_CUH
+#endif //VT_PHYSICS_IMMCUDAAPI_CUH
