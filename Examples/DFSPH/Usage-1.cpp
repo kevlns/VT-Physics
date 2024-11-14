@@ -83,5 +83,5 @@ int main() {
     VT_Simulator.terminate();
     Simulator::clean();
 
-    system("pause");
+    SYS_PAUSE();
 }
