@@ -15,8 +15,6 @@ namespace VT_Physics {
     class Object {
     public:
 
-        Object() = default;
-
         Object(long long id);
 
         ~Object();
