@@ -1,0 +1,76 @@
+{
+  "IMMCT"  : {
+    "Required": {
+      "animationTime"                 : 5,
+      "timeStep"                      : 0.0008,
+      "particleRadius"                : 0.05,
+      "simSpaceLB"                    : [-10, -10, -10],
+      "simSpaceSize"                  : [20, 20, 20],
+      "maxNeighborNum"                : 60,
+      "divFreeThreshold"              : 1e-4,
+      "incompThreshold"               : 1e-4,
+      "surfaceTensionCoefficient"     : 0.001,
+      "diffusionCoefficientCf"        : 0.15,
+      "momentumExchangeCoefficientCd0": 0.5,
+      "solventViscosity"              : 0.01,
+      "phaseRestDensity"              : [900, 1000],
+      "phaseRestColor"                : [[255, 0, 0], [0, 0, 255]],
+      "solutionBasicViscosity"        : 8,
+      "solutionMaxViscosity"          : 12,
+      "relaxationTime"                : 0.001,
+      "shearThinningBasicFactor"      : 0.5,
+      "rheologicalThreshold"          : 0.4
+    },
+    "Optional": {
+      "enable" : false,
+      "gravity": [0, -9.81, 0]
+    }
+  },
+  "EXPORT" : {
+    "Common"        : {
+      "exportTargetDir" : "F:\\DataSet.Research\\VP-Examples\\IMMCT",
+      "exportFilePrefix": "obj",
+      "exportFileType"  : "PLY"
+    },
+    "SolverRequired": {
+      "enable"           : true,
+      "exportFps"        : 35,
+      "exportGroupPolicy": "MERGE"
+    }
+  },
+  "OBJECTS": [
+    {
+      "name"                       : "cube",
+      "objTransferType"            : 2,
+      "ObjectComponentConfig"      : {
+        "epmMaterial"   : 0,
+        "particleRadius": 0.05,
+        "lb"            : [-1, -1, -1],
+        "size"          : [2, 2, 2]
+      },
+      "SolverObjectComponentConfig": {
+        "solverType"   : 3,
+        "exportFlag"   : true,
+        "velocityStart": [0, 0, 0],
+        "phaseFraction": [0.3, 0.7]
+      }
+    },
+    {
+      "name"                       : "box",
+      "objTransferType"            : 5,
+      "ObjectComponentConfig"      : {
+        "epmMaterial"   : 1,
+        "particleRadius": 0.05,
+        "lb"            : [-2, -2, -2],
+        "size"          : [4, 4, 4],
+        "layerNum"      : 1
+      },
+      "SolverObjectComponentConfig": {
+        "solverType"   : 3,
+        "exportFlag"   : false,
+        "velocityStart": [0, 0, 0],
+        "phaseFraction": [0, 0]
+      }
+    }
+  ]
+}
