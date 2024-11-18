@@ -3,8 +3,8 @@
  * @date 2024/11/11
  */
 
-#ifndef VT_PHYSICS_IMMCTCTSOLVER_HPP
-#define VT_PHYSICS_IMMCTCTSOLVER_HPP
+#ifndef VT_PHYSICS_IMMCTSOLVER_HPP
+#define VT_PHYSICS_IMMCTSOLVER_HPP
 
 #include <vector>
 #include <set>
@@ -112,4 +112,4 @@ namespace VT_Physics::immct {
     };
 }
 
-#endif //VT_PHYSICS_IMMCTCTSOLVER_HPP
+#endif //VT_PHYSICS_IMMCTSOLVER_HPP
