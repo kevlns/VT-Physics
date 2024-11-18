@@ -9,6 +9,7 @@
 #include "Manager/ObjectManager.hpp"
 #include "Manager/SolverManager.hpp"
 #include "JSON/JSONHandler.hpp"
+#include "Logger/Logger.hpp"
 #include "Model/ModelHandler.hpp"
 #include "Model/ExportUtil.hpp"
 #include "ConfigTemplates/RealPath.h"

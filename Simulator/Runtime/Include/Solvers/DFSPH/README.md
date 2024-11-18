@@ -13,7 +13,7 @@ The Solver includes two main components:
 
 ```json
 {
-  "PBF"   : {
+  "DFSPH"   : {
     "Required": {
       // Animation time in seconds
       "animationTime"            : 10,

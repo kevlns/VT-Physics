@@ -86,4 +86,12 @@ namespace VT_Physics {
         return loadJson(std::string(VP_CONFIG_DIR) + "IMMSolver/IMMSolverObjectComponentConfigTemplate.json");
     }
 
+    json JsonHandler::loadIMMCTConfigTemplateJson() {
+        return loadJson(std::string(VP_CONFIG_DIR) + "IMMCTSolver/IMMCTSolverConfigTemplate.json");
+    }
+
+    json JsonHandler::loadIMMCTObjectComponentConfigTemplateJson() {
+        return loadJson(std::string(VP_CONFIG_DIR) + "IMMCTSolver/IMMCTSolverObjectComponentConfigTemplate.json");
+    }
+
 }
