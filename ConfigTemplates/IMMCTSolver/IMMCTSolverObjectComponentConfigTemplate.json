@@ -1,0 +1,6 @@
+{
+  "solverType"   : 3,
+  "exportFlag"   : false,
+  "velocityStart": [0, 0, 0],
+  "phaseFraction": [0.5, 0.5]
+}

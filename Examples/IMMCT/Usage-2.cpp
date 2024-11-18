@@ -9,18 +9,18 @@ int main() {
     auto objectManager = VT_Simulator.getObjectManager();
 
     auto sceneConfig = JsonHandler::loadJson(
-            std::string(VP_EXAMPLES_DIR) + "IMM/Scene-1/Configuration.json");
+            std::string(VP_EXAMPLES_DIR) + "IMMCT/Scene-1/Configuration.json");
 
     /**
      * Create a PBF solver and set solver config ==================================================
      */
-    auto immSolver = solverManager->createSolver(IMM);
-    immSolver->setConfig(sceneConfig);
+    auto immctSolver = solverManager->createSolver(IMMCT);
+    immctSolver->setConfig(sceneConfig);
 
     /**
      * Get object component config for PBF simulator ===============================================
      */
-    auto pbfObjComponentConfig = immSolver->getSolverObjectComponentConfigTemplate();
+    auto pbfObjComponentConfig = immctSolver->getSolverObjectComponentConfigTemplate();
 
     /**
      * Create particle objects for PBF simulator ===================================================
@@ -30,13 +30,13 @@ int main() {
     /**
      * Attach objects to PBF solver ================================================================
      */
-    immSolver->attachObjects(objs);
+    immctSolver->attachObjects(objs);
 
     /**
      * Run simulation ==============================================================================
      */
-    immSolver->run();
-//    immSolver->tickNsteps(10);
+    immctSolver->run();
+//    immctSolver->tickNsteps(10);
 
     /**
      * Terminate simulator ========================================================================

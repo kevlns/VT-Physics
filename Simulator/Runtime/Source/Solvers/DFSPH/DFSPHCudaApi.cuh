@@ -3,8 +3,8 @@
  * @date 2024/11/7
  */
 
-#ifndef VT_PHYSICS_PBFCUDAAPI_CUH
-#define VT_PHYSICS_PBFCUDAAPI_CUH
+#ifndef VT_PHYSICS_DFSPHCUDAAPI_CUH
+#define VT_PHYSICS_DFSPHCUDAAPI_CUH
 
 #include "Solvers/DFSPH/DFSPHrtData.hpp"
 #include "Modules/NeighborSearch/UGNS/UniformGridNeighborSearch.hpp"
@@ -70,4 +70,4 @@ namespace VT_Physics::dfsph {
 
 }
 
-#endif //VT_PHYSICS_PBFCUDAAPI_CUH
+#endif //VT_PHYSICS_DFSPHCUDAAPI_CUH

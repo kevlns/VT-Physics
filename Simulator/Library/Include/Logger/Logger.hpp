@@ -9,25 +9,31 @@
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/basic_file_sink.h"
 
-#ifdef NDEBUG
+#include <iostream>
 
-#define LOG_INFO(msg) {};
-
-#define LOG_WARNING(msg) {};
-
-#define LOG_ERROR(msg) {};
-
-#else
-
-#endif
+namespace VT_Physics {
 
 #define LOG_INFO(msg) \
     spdlog::info(msg);
 
+#define LOG_ERROR(msg) \
+    spdlog::error(msg);
+
+#ifdef NDEBUG
+
+#define LOG_WARNING(msg) {};
+
+#else
+
 #define LOG_WARNING(msg) \
     spdlog::warn(msg);
 
-#define LOG_ERROR(msg) \
-    spdlog::error(msg);
+#endif
+
+#define SYS_PAUSE() \
+    LOG_INFO("Simulation done! \n\n Press 'Enter' to exit..."); \
+    std::cin.get();
+
+}
 
 #endif //VT_PHYSICS_LOGGER_HPP

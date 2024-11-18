@@ -3,24 +3,24 @@
  * @date 2024/11/7
  */
 
-#ifndef VT_PHYSICS_IMMCUDAAPI_CUH
-#define VT_PHYSICS_IMMCUDAAPI_CUH
+#ifndef VT_PHYSICS_IMMCTCUDAAPI_CUH
+#define VT_PHYSICS_IMMCTCUDAAPI_CUH
 
-#include "Solvers/IMM/IMMrtData.hpp"
+#include "Solvers/IMM-CT/IMMCTrtData.hpp"
 #include "Modules/NeighborSearch/UGNS/UniformGridNeighborSearch.hpp"
 #include "Core/Math/helper_math_cu11.6.h"
 
-namespace VT_Physics::imm {
+namespace VT_Physics::immct {
 
     __host__ void
     init_data(Data *h_data,
               Data *d_data);
 
     __host__ void
-    prepare_imm(Data *h_data,
-                Data *d_data,
-                UGNS::UniformGirdNeighborSearcherConfig *d_nsConfig,
-                UGNS::UniformGirdNeighborSearcherParams *d_nsParams);
+    prepare_immct(Data *h_data,
+                  Data *d_data,
+                  UGNS::UniformGirdNeighborSearcherConfig *d_nsConfig,
+                  UGNS::UniformGirdNeighborSearcherParams *d_nsParams);
 
     __host__ void
     sph_precompute(Data *h_data,
@@ -44,10 +44,17 @@ namespace VT_Physics::imm {
                        UGNS::UniformGirdNeighborSearcherParams *d_nsParams);
 
     __host__ void
-    imm_gravity_vis_surface(Data *h_data,
-                            Data *d_data,
-                            UGNS::UniformGirdNeighborSearcherConfig *d_nsConfig,
-                            UGNS::UniformGirdNeighborSearcherParams *d_nsParams);
+    immct_gravity_vis_surface(Data *h_data,
+                              Data *d_data,
+                              UGNS::UniformGirdNeighborSearcherConfig *d_nsConfig,
+                              UGNS::UniformGirdNeighborSearcherParams *d_nsParams);
+
+    __host__ void
+    immct_pct(Data *h_data,
+              Data *d_data,
+              UGNS::UniformGirdNeighborSearcherConfig *d_nsConfig,
+              UGNS::UniformGirdNeighborSearcherParams *d_nsParams);
+
 
     __host__ void
     vfsph_incomp(Data *h_data,
@@ -83,4 +90,4 @@ namespace VT_Physics::imm {
                  UGNS::UniformGirdNeighborSearcherParams *d_nsParams);
 }
 
-#endif //VT_PHYSICS_IMMCUDAAPI_CUH
+#endif //VT_PHYSICS_IMMCTCUDAAPI_CUH

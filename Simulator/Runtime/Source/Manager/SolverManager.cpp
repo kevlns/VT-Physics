@@ -4,6 +4,7 @@
 #include "Solvers/PBF/PBFSolver.hpp"
 #include "Solvers/DFSPH/DFSPHSolver.hpp"
 #include "Solvers/IMM/IMMSolver.hpp"
+#include "Solvers/IMM-CT/IMMCTSolver.hpp"
 
 namespace VT_Physics {
 
@@ -28,6 +29,10 @@ namespace VT_Physics {
                 break;
             case eSolverType::IMM:
                 solver = new imm::IMMSolver(m_cuda_threadNum_per_block);
+                m_solvers.push_back(solver);
+                break;
+            case eSolverType::IMMCT:
+                solver = new immct::IMMCTSolver(m_cuda_threadNum_per_block);
                 m_solvers.push_back(solver);
                 break;
         }

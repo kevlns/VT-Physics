@@ -1,0 +1,41 @@
+{
+  "IMMCT" : {
+    "Required": {
+      "animationTime"                 : 5,
+      "timeStep"                      : 0.0008,
+      "particleRadius"                : 0.05,
+      "simSpaceLB"                    : [-10, -10, -10],
+      "simSpaceSize"                  : [20, 20, 20],
+      "maxNeighborNum"                : 60,
+      "divFreeThreshold"              : 1e-4,
+      "incompThreshold"               : 1e-4,
+      "surfaceTensionCoefficient"     : 0.001,
+      "diffusionCoefficientCf"        : 0.15,
+      "momentumExchangeCoefficientCd0": 0.5,
+      "solventViscosity"              : 0.01,
+      "phaseRestDensity"              : [900, 1000],
+      "phaseRestColor"                : [[255, 0, 0], [0, 0, 255]],
+      "solutionBasicViscosity"        : 12,
+      "solutionMaxViscosity"          : 12,
+      "relaxationTime"                : 0.001,
+      "shearThinningBasicFactor"      : 0.5,
+      "rheologicalThreshold"          : 0.4
+    },
+    "Optional": {
+      "enable" : false,
+      "gravity": [0, -9.81, 0]
+    }
+  },
+  "EXPORT": {
+    "Common"        : {
+      "exportTargetDir" : "path/to/output",
+      "exportFilePrefix": "obj",
+      "exportFileType"  : "PLY"
+    },
+    "SolverRequired": {
+      "enable"           : false,
+      "exportFps"        : 35,
+      "exportGroupPolicy": "MERGE"
+    }
+  }
+}
