@@ -14,7 +14,7 @@ The Solver includes two main components:
 
 ```json
 {
-  "PBF"   : {
+  "IMM"   : {
     "Required": {
       // Animation time in seconds
       "animationTime"                : 10,
