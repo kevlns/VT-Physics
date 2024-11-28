@@ -23,6 +23,9 @@ namespace VT_Physics {
     // explicit template instance
     template float cal_mean<float>(float *d_ptr, unsigned raw_size, unsigned target_size, unsigned target_start);
 
+    template unsigned
+    cal_mean<unsigned>(unsigned *d_ptr, unsigned raw_size, unsigned target_size, unsigned target_start);
+
     template float3 cal_mean<float3>(float3 *d_ptr, unsigned raw_size, unsigned target_size, unsigned target_start);
 
 }

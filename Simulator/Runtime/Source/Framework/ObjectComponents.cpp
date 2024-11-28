@@ -44,12 +44,13 @@ auto ret = new type();\
 
     void ParticleGeometryComponent::update(json &config) {
         if (configIsComplete(config)) {
-            config["loadType"] = static_cast<uint8_t>(m_type);
+            config["genType"] = static_cast<uint8_t>(m_type);
             if (config.contains("epmMaterial"))
                 epmMaterial = config["epmMaterial"];
             particleRadius = config["particleRadius"];
-            particleGeometryPath = config["particleGeometryPath"].get<std::string>();
-            pos = std::move(ModelHandler::loadObjectElements(config));
+            particleGeometryPath = config["particleGeometryPath"];
+            auto p = ModelHandler::generateObjectElements(config);
+            pos = p;
             LOG_INFO("ParticleGeometryComponent config updated.");
         }
     }
@@ -67,8 +68,7 @@ auto ret = new type();\
             LOG_ERROR("ParticleGeometryComponent config missing key: particleRadius");
             ret = false;
         }
-        if (!config.contains("epmMaterial"))
-            LOG_WARNING("ParticleGeometryComponent config missing key: epmMaterial");
+        if (!config.contains("epmMaterial")) LOG_WARNING("ParticleGeometryComponent config missing key: epmMaterial");
         return ret;
     }
     // ====================================================================================
@@ -103,7 +103,8 @@ auto ret = new type();\
             particleRadius = config["particleRadius"];
             volumeCenter = {config["volumeCenter"][0], config["volumeCenter"][1], config["volumeCenter"][2]};
             volumeRadius = config["volumeRadius"];
-            pos = std::move(ModelHandler::generateObjectElements(config));
+            auto p = ModelHandler::generateObjectElements(config);
+            pos = p;
             LOG_INFO("ParticleSphereComponent config updated.");
         }
     }
@@ -122,8 +123,7 @@ auto ret = new type();\
             LOG_ERROR("ParticleSphereComponent config missing key: volumeRadius");
             ret = false;
         }
-        if (!config.contains("epmMaterial"))
-            LOG_WARNING("ParticleSphereComponent config missing key: epmMaterial");
+        if (!config.contains("epmMaterial")) LOG_WARNING("ParticleSphereComponent config missing key: epmMaterial");
 
         return ret;
     }
@@ -159,7 +159,8 @@ auto ret = new type();\
             particleRadius = config["particleRadius"];
             lb = {config["lb"][0], config["lb"][1], config["lb"][2]};
             size = {config["size"][0], config["size"][1], config["size"][2]};
-            pos = std::move(ModelHandler::generateObjectElements(config));
+            auto p = ModelHandler::generateObjectElements(config);
+            pos = p;
             LOG_INFO("ParticleCubeComponent config updated.");
         }
     }
@@ -178,8 +179,7 @@ auto ret = new type();\
             LOG_ERROR("ParticleCubeComponent config missing key: size");
             ret = false;
         }
-        if (!config.contains("epmMaterial"))
-            LOG_WARNING("ParticleCubeComponent config missing key: epmMaterial");
+        if (!config.contains("epmMaterial")) LOG_WARNING("ParticleCubeComponent config missing key: epmMaterial");
         return ret;
     }
     // ====================================================================================
@@ -215,7 +215,8 @@ auto ret = new type();\
             center = {config["center"][0], config["center"][1], config["center"][2]};
             bottomAreaRadius = config["bottomAreaRadius"];
             height = config["height"];
-            pos = std::move(ModelHandler::generateObjectElements(config));
+            auto p = ModelHandler::generateObjectElements(config);
+            pos = p;
             LOG_INFO("ParticleCylinderComponent config updated.");
         }
     }
@@ -238,8 +239,7 @@ auto ret = new type();\
             LOG_ERROR("ParticleCylinderComponent config missing key: height");
             ret = false;
         }
-        if (!config.contains("epmMaterial"))
-            LOG_WARNING("ParticleCylinderComponent config missing key: epmMaterial");
+        if (!config.contains("epmMaterial")) LOG_WARNING("ParticleCylinderComponent config missing key: epmMaterial");
         return ret;
     }
     // ====================================================================================
@@ -275,7 +275,8 @@ auto ret = new type();\
             lb = {config["lb"][0], config["lb"][1], config["lb"][2]};
             size = {config["size"][0], config["size"][1], config["size"][2]};
             layerNum = config["layerNum"];
-            pos = std::move(ModelHandler::generateObjectElements(config));
+            auto p = ModelHandler::generateObjectElements(config);
+            pos = p;
             LOG_INFO("ParticlePlaneComponent config updated.");
         }
     }
@@ -298,8 +299,7 @@ auto ret = new type();\
             LOG_ERROR("ParticlePlaneComponent config missing key: layerNum");
             ret = false;
         }
-        if (!config.contains("epmMaterial"))
-            LOG_WARNING("ParticlePlaneComponent config missing key: epmMaterial");
+        if (!config.contains("epmMaterial")) LOG_WARNING("ParticlePlaneComponent config missing key: epmMaterial");
         return ret;
     }
     // ====================================================================================
@@ -334,7 +334,8 @@ auto ret = new type();\
             lb = {config["lb"][0], config["lb"][1], config["lb"][2]};
             size = {config["size"][0], config["size"][1], config["size"][2]};
             layerNum = config["layerNum"];
-            pos = std::move(ModelHandler::generateObjectElements(config));
+            auto p = ModelHandler::generateObjectElements(config);
+            pos = p;
             LOG_INFO("ParticleBoxComponent config updated.");
         }
     }
@@ -353,8 +354,7 @@ auto ret = new type();\
             LOG_ERROR("ParticleBoxComponent config missing key: layerNum");
             ret = false;
         }
-        if (!config.contains("epmMaterial"))
-            LOG_WARNING("ParticleBoxComponent config missing key: epmMaterial");
+        if (!config.contains("epmMaterial")) LOG_WARNING("ParticleBoxComponent config missing key: epmMaterial");
         return ret;
     }
     // ====================================================================================

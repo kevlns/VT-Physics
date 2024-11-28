@@ -1,0 +1,80 @@
+{
+  "MCT"    : {
+    "Required": {
+      "animationTime"                 : 10,
+      "timeStep"                      : 0.001,
+      "particleRadius"                : 0.05,
+      "simSpaceLB"                    : [-7, 0, -7],
+      "simSpaceSize"                  : [14, 16, 14],
+      "maxNeighborNum"                : 60,
+      "divFreeThreshold"              : 1e-4,
+      "incompThreshold"               : 1e-4,
+      "surfaceTensionCoefficient"     : 0.35,
+      "diffusionCoefficientCf"        : 0.25,
+      "momentumExchangeCoefficientCd" : 0.4,
+      "phaseRestDensity"              : [1000, 1000],
+      "phaseRestColor"                : [[255, 0, 0], [0, 0, 255]],
+      "phaseRestViscosity"            : [0.01, 0.01],
+      "phaseRelaxationTime"           : [0.001, 0.001],
+      "phaseThinningFactor"           : [0.0, 0.0],
+      "phaseModelImpactFactor"        : 0.01,
+      "enablePorous"                  : true,
+      "phasePorousPermeability"       : [0.5, 0.5],
+      "phasePorousCapillarityStrength": [0.1, 0.1],
+      "porousPorosity"                : 0.6,
+      "RestPressurePore"              : 2e4,
+      "enableDigging"                 : false,
+      "porousHRRate"                  : 3
+    },
+    "Optional": {
+      "enable" : false,
+      "gravity": [0, -9.81, 0]
+    }
+  },
+  "EXPORT" : {
+    "Common"        : {
+      "exportTargetDir" : "F:\\DataSet.Research\\Multimode-CT_with_Porous\\experiments\\Vise_Fluids_9blocks\\scene_test",
+      "exportFilePrefix": "obj",
+      "exportFileType"  : "PLY"
+    },
+    "SolverRequired": {
+      "enable"           : true,
+      "exportFps"        : 35,
+      "exportGroupPolicy": "MERGE"
+    }
+  },
+  "OBJECTS": [
+    {
+      "name"                       : "fluid_cube_1",
+      "objTransferType"            : 0,
+      "ObjectComponentConfig"      : {
+        "epmMaterial"         : 0,
+        "particleRadius"      : 0.05,
+        "particleGeometryPath": "F:\\DataSet.Research\\Multimode-CT_with_Porous\\experiments\\Vise_Fluids_9blocks\\models\\fluid_1.ply"
+      },
+      "SolverObjectComponentConfig": {
+        "solverType"    : 4,
+        "exportFlag"    : true,
+        "velocityStart" : [0, 0, 0],
+        "phaseFraction" : [0.35, 0.65],
+        "fPartMinerRate": 0.0
+      }
+    },
+    {
+      "name"                       : "bound_box",
+      "objTransferType"            : 0,
+      "ObjectComponentConfig"      : {
+        "epmMaterial"         : 1,
+        "particleRadius"      : 0.05,
+        "particleGeometryPath": "F:\\DataSet.Research\\Multimode-CT_with_Porous\\experiments\\Vise_Fluids_9blocks\\models\\bound_box.ply"
+      },
+      "SolverObjectComponentConfig": {
+        "solverType"    : 4,
+        "exportFlag"    : false,
+        "velocityStart" : [0, 0, 0],
+        "phaseFraction" : [0.0, 0.0],
+        "fPartMinerRate": 0.0
+      }
+    }
+  ]
+}

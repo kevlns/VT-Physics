@@ -15,6 +15,7 @@ SET(DEPENDENCY_LIBS
         vpdfsph
         vpimm
         vpimmct
+        vpmct
 )
 
 ADD_LIBRARY(vpmanager STATIC ${RUNTIME_MANAGER_HEADER_FILES} ${RUNTIME_MANAGER_SRC_FILES})

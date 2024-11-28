@@ -19,6 +19,8 @@ namespace VT_Physics {
     }
 
     bool JsonHandler::saveJson(const std::string &path, const json &j) {
+        // when use ofstream, check the path, if dir not exist, create it
+        std::filesystem::create_directories(std::filesystem::path(path).parent_path());
         std::ofstream jsonFile(path);
         if (jsonFile.is_open()) {
             jsonFile << j.dump();
@@ -92,6 +94,14 @@ namespace VT_Physics {
 
     json JsonHandler::loadIMMCTObjectComponentConfigTemplateJson() {
         return loadJson(std::string(VP_CONFIG_DIR) + "IMMCTSolver/IMMCTSolverObjectComponentConfigTemplate.json");
+    }
+
+    json JsonHandler::loadMCTConfigTemplateJson() {
+        return loadJson(std::string(VP_CONFIG_DIR) + "MCTSolver/MCTSolverConfigTemplate.json");
+    }
+
+    json JsonHandler::loadMCTObjectComponentConfigTemplateJson() {
+        return loadJson(std::string(VP_CONFIG_DIR) + "MCTSolver/MCTSolverObjectComponentConfigTemplate.json");
     }
 
 }

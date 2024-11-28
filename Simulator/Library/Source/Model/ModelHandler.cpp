@@ -16,28 +16,36 @@ namespace VT_Physics {
             return {};
         }
 
+        std::vector<float3> ret;
+
         switch (static_cast<uint8_t>(config["genType"])) {
             case 0:
-                // TODO load particle model
-                return {};
+                ret = loadObjectElements(config);
+                break;
             case 1:
-                return generateParticleSphereElements(config);
+                ret = generateParticleSphereElements(config);
+                break;
             case 2:
-                return generateParticleCubeElements(config);
+                ret = generateParticleCubeElements(config);
+                break;
             case 3:
-                return generateParticleCylinderElements(config);
+                ret = generateParticleCylinderElements(config);
+                break;
             case 4:
-                return generateParticlePlaneElements(config);
+                ret = generateParticlePlaneElements(config);
+                break;
             case 5:
-                return generateParticleBoxElements(config);
-
+                ret = generateParticleBoxElements(config);
+                break;
             case 20:
                 // TODO load mesh model
-                return {};
+                break;
             default:
                 LOG_ERROR("Unknown or Unsupported generation type specified.");
-                return {};
+                break;
         };
+
+        return ret;
     }
 
     std::vector<float3> ModelHandler::generateParticleCubeElements(json config) {
@@ -63,7 +71,7 @@ namespace VT_Physics {
             z += diameter;
         }
 
-        return std::move(particles);
+        return particles;
     }
 
     std::vector<float3> ModelHandler::generateParticleCylinderElements(json config) {
@@ -92,7 +100,7 @@ namespace VT_Physics {
             }
         }
 
-        return std::move(particles);
+        return particles;
     }
 
     std::vector<float3> ModelHandler::generateParticleSphereElements(json config) {
@@ -118,7 +126,7 @@ namespace VT_Physics {
             }
         }
 
-        return std::move(particles);
+        return particles;
     }
 
     std::vector<float3> ModelHandler::generateParticleBoxElements(json config) {
@@ -150,7 +158,7 @@ namespace VT_Physics {
             }
         }
 
-        return std::move(particles);
+        return particles;
     }
 
     std::vector<float3> ModelHandler::generateParticlePlaneElements(json config) {
@@ -171,12 +179,12 @@ namespace VT_Physics {
             }
         }
 
-        return std::move(particles);
+        return particles;
     }
 
     std::vector<float3> ModelHandler::loadObjectElements(json config) {
-        if (config["loadType"] < 20) {
-            return std::move(loadParticleElements(config));
+        if (config["genType"] == 0) {
+            return loadParticleElements(config);
         } else {
             // TODO
             return {};
@@ -197,7 +205,7 @@ namespace VT_Physics {
         auto filePath = config["particleGeometryPath"].get<std::string>();
         if (supportedFileType.count(getFileExtensionUpper(filePath)) != 0) {
             if (getFileExtensionUpper(filePath) == "PLY")
-                return std::move(load_PLY_ParticleElements(filePath));
+                return load_PLY_ParticleElements(filePath);
         }
 
         LOG_ERROR("Unsupported file type: " + getFileExtensionUpper(filePath))
@@ -224,7 +232,7 @@ namespace VT_Physics {
             }
         }
 
-        return std::move(particles);
+        return particles;
     }
 
 }

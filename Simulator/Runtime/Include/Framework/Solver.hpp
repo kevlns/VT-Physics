@@ -21,7 +21,8 @@ namespace VT_Physics {
         PBF = 0,
         DFSPH = 1,
         IMM = 2,
-        IMMCT = 3
+        IMMCT = 3,
+        MCT = 4,
     } SolverType;
 
     class Solver {

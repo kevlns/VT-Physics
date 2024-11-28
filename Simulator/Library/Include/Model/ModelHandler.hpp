@@ -17,9 +17,9 @@ namespace VT_Physics {
     public:
         static std::vector<float3> generateObjectElements(json config);
 
+    private:
         static std::vector<float3> loadObjectElements(json config);
 
-    private:
         static std::vector<float3> generateParticleCubeElements(json config);
 
         static std::vector<float3> generateParticleCylinderElements(json config);

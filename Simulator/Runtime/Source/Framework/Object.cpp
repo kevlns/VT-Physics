@@ -50,7 +50,7 @@ namespace VT_Physics {
     }
 
     void Object::attachSpecificSolverObjectComponentConfig(json specificSolverObjectComponentConfig) {
-        m_solverSpecificComponentConfig = std::move(specificSolverObjectComponentConfig);
+        m_solverSpecificComponentConfig = specificSolverObjectComponentConfig;
     }
 
     json &Object::getSolverObjectComponentConfig() {

@@ -1,0 +1,44 @@
+{
+  "MCT"   : {
+    "Required": {
+      "animationTime"                 : 35,
+      "timeStep"                      : 0.001,
+      "particleRadius"                : 0.05,
+      "simSpaceLB"                    : [-10, -10, -10],
+      "simSpaceSize"                  : [20, 20, 20],
+      "maxNeighborNum"                : 60,
+      "divFreeThreshold"              : 1e-4,
+      "incompThreshold"               : 1e-4,
+      "surfaceTensionCoefficient"     : 1.8,
+      "diffusionCoefficientCf"        : 0.15,
+      "momentumExchangeCoefficientCd" : 0.5,
+      "phaseRestDensity"              : [900, 1000],
+      "phaseRestColor"                : [[255, 0, 0], [0, 0, 255]],
+      "phaseRestViscosity"            : [4, 2],
+      "phaseRelaxationTime"           : [0.001, 0.001],
+      "phaseThinningFactor"           : [0.0, 0.0],
+      "phaseModelImpactFactor"        : 0.005,
+      "enablePorous"                  : true,
+      "phasePorousPermeability"       : [1, 1],
+      "phasePorousCapillarityStrength": [0, 1.5],
+      "porousPorosity"                : 0.2,
+      "porousHRRate"                  : 3
+    },
+    "Optional": {
+      "enable" : false,
+      "gravity": [0, -9.81, 0]
+    }
+  },
+  "EXPORT": {
+    "Common"        : {
+      "exportTargetDir" : "path/to/dir",
+      "exportFilePrefix": "obj",
+      "exportFileType"  : "PLY"
+    },
+    "SolverRequired": {
+      "enable"           : true,
+      "exportFps"        : 35,
+      "exportGroupPolicy": "MERGE"
+    }
+  }
+}
