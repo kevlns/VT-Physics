@@ -53,6 +53,7 @@ namespace VT_Physics::mct {
         m_host_data->div_free_threshold = mct_config["Required"]["divFreeThreshold"].get<float>();
         m_host_data->incomp_threshold = mct_config["Required"]["incompThreshold"].get<float>();
         m_host_data->surface_tension_coefficient = mct_config["Required"]["surfaceTensionCoefficient"].get<float>();
+        m_host_data->bound_vis_factor = mct_config["Required"]["boundViscousFactor"].get<float>();
         m_host_data->gravity = make_float3(0.f, -9.8f, 0.f);
         m_host_data->Cf = mct_config["Required"]["diffusionCoefficientCf"].get<float>();
         m_host_data->Cd = mct_config["Required"]["momentumExchangeCoefficientCd"].get<float>();
@@ -408,17 +409,18 @@ namespace VT_Physics::mct {
         }
 
         if (obj->getObjectComponentConfig()["epmMaterial"].get<int>() == EPM_POROUS) {
-            json hr_config = obj->getObjectComponentConfig();
+            json obj_comp_config = obj->getObjectComponentConfig();
+            json solver_comp_config = obj->getSolverObjectComponentConfig();
             std::vector<float3> pPart_hr_tmp;
             if (static_cast<uint8_t>(obj->getObjectComponent()->getType()) == 0) {
-                if (hr_config.contains("hrModelPath")) {
-                    hr_config["particleGeometryPath"] = hr_config["hrModelPath"];
+                if (!solver_comp_config["hrModelPath"].get<std::string>().empty()) {
+                    obj_comp_config["particleGeometryPath"] = solver_comp_config["hrModelPath"];
                 }
-                pPart_hr_tmp = ModelHandler::generateObjectElements(hr_config);
+                pPart_hr_tmp = ModelHandler::generateObjectElements(obj_comp_config);
             } else {
-                hr_config["particleRadius"] = hr_config["particleRadius"].get<float>() /
-                                              m_configData["MCT"]["Required"]["porousHRRate"].get<float>();
-                pPart_hr_tmp = ModelHandler::generateObjectElements(hr_config);
+                obj_comp_config["particleRadius"] = obj_comp_config["particleRadius"].get<float>() /
+                                                    m_configData["MCT"]["Required"]["porousHRRate"].get<float>();
+                pPart_hr_tmp = ModelHandler::generateObjectElements(obj_comp_config);
             }
             m_host_digging_pPart_hrPos.insert(m_host_digging_pPart_hrPos.end(), pPart_hr_tmp.begin(),
                                               pPart_hr_tmp.end());

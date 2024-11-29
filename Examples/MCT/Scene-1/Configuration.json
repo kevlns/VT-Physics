@@ -10,6 +10,7 @@
       "divFreeThreshold"              : 1e-4,
       "incompThreshold"               : 1e-4,
       "surfaceTensionCoefficient"     : 0.35,
+      "boundViscousFactor"            : 0.001,
       "diffusionCoefficientCf"        : 0.25,
       "momentumExchangeCoefficientCd" : 0.4,
       "phaseRestDensity"              : [1000, 1000],

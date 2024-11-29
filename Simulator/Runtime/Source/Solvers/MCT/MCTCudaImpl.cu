@@ -962,8 +962,9 @@ namespace VT_Physics::mct {
             auto pos_j = DATA_VALUE(pos, p_j);
 
             auto v_ji = DATA_VALUE(vel, p_j) - DATA_VALUE(vel, p_i);
-            DATA_VALUE(acc, p_i) += 0.01 * (v_ji * CONST_VALUE(fPart_rest_volume) * CUBIC_KERNEL_VALUE()) /
-                                    CONST_VALUE(dt);
+            DATA_VALUE(acc, p_i) +=
+                    CONST_VALUE(bound_vis_factor) * (v_ji * CONST_VALUE(fPart_rest_volume) * CUBIC_KERNEL_VALUE()) /
+                    CONST_VALUE(dt);
         }
     }
 

@@ -25,6 +25,7 @@ namespace VT_Physics::mct {
             "divFreeThreshold",
             "incompThreshold",
             "surfaceTensionCoefficient",
+            "boundViscousFactor",
             "diffusionCoefficientCf",
             "momentumExchangeCoefficientCd",
             "phaseRestDensity",
@@ -53,6 +54,7 @@ namespace VT_Physics::mct {
             "velocityStart",
             "phaseFraction",
             "fPartMinerRate",
+            "hrModelPath"
     };
 
     inline const std::set<uint8_t> MCTSolverSupportedMaterials = {

@@ -52,6 +52,7 @@ namespace VT_Physics::mct {
         float *relaxation_time;
         float *thinning_factor;
         float rest_pressure_pore;
+        float bound_vis_factor;
         // for digging policy
         uint32_t digging_particle_num;
 

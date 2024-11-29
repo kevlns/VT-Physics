@@ -9,7 +9,7 @@ int main() {
     auto objectManager = VT_Simulator.getObjectManager();
 
     auto sceneConfig = JsonHandler::loadJson(
-            "F:\\DataSet.Research\\Multimode-CT_with_Porous\\experiments\\Vise_Ducks\\SCENE_[1phase_vis_100_rel_0.001]\\Configuration.json");
+            "F:\\DataSet.Research\\Multimode-CT_with_Porous\\experiments\\Vise_Ducks\\SCENE_[1phase_vis_10_rel_0.01]\\Configuration.json");
 
     /**
      * Create a PBF solver and set solver config ==================================================
