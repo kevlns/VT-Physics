@@ -106,6 +106,11 @@ namespace VT_Physics::mct {
     update_color(Data *h_data,
                  Data *d_data,
                  UGNS::UniformGirdNeighborSearcherParams *d_nsParams);
+
+    __host__ void
+    stir_fan(Data *h_data,
+             Data *d_data,
+             UGNS::UniformGirdNeighborSearcherParams *d_nsParams);
 }
 
 #endif //VT_PHYSICS_MCTCUDAAPI_CUH

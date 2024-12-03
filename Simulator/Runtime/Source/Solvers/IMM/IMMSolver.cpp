@@ -406,6 +406,11 @@ namespace VT_Physics::imm {
         static const std::vector<int> exportObjectMats =
                 m_configData["EXPORT"]["SolverRequired"]["exportObjectMaterials"].get<std::vector<int>>();
 
+        if (m_host_data->cur_simTime > 1)
+            stir_fan(m_host_data,
+                     m_device_data,
+                     m_neighborSearcher.m_params_cuData);
+
         m_neighborSearcher.update(m_host_data->pos);
 
         sph_precompute(m_host_data,

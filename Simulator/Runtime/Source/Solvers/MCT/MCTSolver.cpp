@@ -228,25 +228,6 @@ namespace VT_Physics::mct {
             return false;
         }
 
-        // miner policy
-//        if (m_configData["EXPORT"]["SolverRequired"]["enable"].get<bool>()) {
-//            json miner_flag;
-//            miner_flag["Flag"] = m_host_digging_fPart_minerFlag;
-//            JsonHandler::saveJson(m_configData["EXPORT"]["Common"]["exportTargetDir"].get<std::string>() +
-//                                  "/MinerPolicy/fPart_minerFlags.json", miner_flag);
-//
-//            json hr_pParts;
-//            hr_pParts["Pos"] = json::array();
-//            for (auto &pos: m_host_digging_pPart_hrPos) {
-//                hr_pParts["Pos"].push_back({pos.x, pos.y, pos.z});
-//            }
-//            JsonHandler::saveJson(m_configData["EXPORT"]["Common"]["exportTargetDir"].get<std::string>() +
-//                                  "/MinerPolicy/hr_pParts.json", hr_pParts);
-//
-//            m_host_digging_fPart_minerFlag.resize(0);
-//            m_host_digging_pPart_hrPos.resize(0);
-//        }
-
         m_isInitialized = true;
         return m_isInitialized;
     }
@@ -570,6 +551,11 @@ namespace VT_Physics::mct {
                 m_configData["EXPORT"]["SolverRequired"]["exportObjectEndIndex"].get<std::vector<int>>();
         static const std::vector<int> exportObjectMats =
                 m_configData["EXPORT"]["SolverRequired"]["exportObjectMaterials"].get<std::vector<int>>();
+
+        if (m_host_data->cur_simTime > 1)
+            stir_fan(m_host_data,
+                     m_device_data,
+                     m_neighborSearcher.m_params_cuData);
 
         m_neighborSearcher.update(m_host_data->pos);
 

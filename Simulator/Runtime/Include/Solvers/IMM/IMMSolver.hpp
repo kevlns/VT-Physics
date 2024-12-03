@@ -46,7 +46,8 @@ namespace VT_Physics::imm {
 
     inline const std::set<uint8_t> IMMSolverSupportedMaterials = {
             EPM_FLUID,
-            EPM_BOUNDARY
+            EPM_BOUNDARY,
+            EPM_PCR_FAN
     };
 
     class IMMSolver : public Solver {

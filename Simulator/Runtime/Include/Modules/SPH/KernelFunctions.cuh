@@ -56,6 +56,7 @@ namespace VT_Physics::sph {
         return res;
     }
 
+    // 2013-Versatile Surface Tension and Adhesion for SPH Fluids
     __host__ __device__ inline float
     surface_tension_C(const float r_norm, const float h) {
         static const float PI = 3.14159265;
@@ -76,19 +77,17 @@ namespace VT_Physics::sph {
         return (r_norm <= h) ? (45.0f * (h - r_norm) / (PI * powf(h, 6))) : 0.0f;
     }
 
+    // 2013-Versatile Surface Tension and Adhesion for SPH Fluids
     __device__ inline float
     adhesion_kernel_value(const float3 &r, float h) {
         static const float PI = 3.14159265;
         const float r_norm = length(r);
-        const float cubicSigma = 8.f / PI / static_cast<float>(powf(h, 3));
         const float factor = 0.007f / powf(h, 3.25);
 
         float res = 0.0;
-        float invH = 1 / h;
-        float q = r_norm * invH;
 
-        if (q <= 1 && q > 0.5)
-            res = static_cast<float>(factor * powf(-4 * r_norm * r_norm * invH + 6 * r_norm - 2 * h, -4));
+        if (2 * r_norm > h && r_norm <= h)
+            res = static_cast<float>(factor * powf(-4 * r_norm * r_norm / h + 6 * r_norm - 2 * h, -4));
 
         return res;
     }

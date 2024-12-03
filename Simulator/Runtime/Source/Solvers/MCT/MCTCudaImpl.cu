@@ -945,9 +945,9 @@ namespace VT_Physics::mct {
     }
 
     __global__ void
-    add_phase_adhesion_acc_cuda(Data *d_data,
-                                UGNS::UniformGirdNeighborSearcherConfig *d_nsConfig,
-                                UGNS::UniformGirdNeighborSearcherParams *d_nsParams) {
+    add_adhesion_acc_cuda(Data *d_data,
+                          UGNS::UniformGirdNeighborSearcherConfig *d_nsConfig,
+                          UGNS::UniformGirdNeighborSearcherParams *d_nsParams) {
         CHECK_THREAD();
 
         if (DATA_VALUE(mat, p_i) != EPM_FLUID)
@@ -956,7 +956,7 @@ namespace VT_Physics::mct {
         DATA_VALUE(acc, p_i) *= 0;
         auto pos_i = DATA_VALUE(pos, p_i);
         FOR_EACH_NEIGHBOR_Pj() {
-            if (DATA_VALUE(mat, p_j) == EPM_FLUID)
+            if (DATA_VALUE(mat, p_j) != EPM_BOUNDARY)
                 continue;
 
             auto pos_j = DATA_VALUE(pos, p_j);
@@ -992,6 +992,25 @@ namespace VT_Physics::mct {
         }
     }
 
+    __global__ void
+    stir_fan_cuda(Data *d_data,
+                  UGNS::UniformGirdNeighborSearcherParams *d_nsParams) {
+        CHECK_THREAD();
+
+        if (DATA_VALUE(mat, p_i) != EPM_PCR_FAN)
+            return;
+
+        const float M_PI = 3.1415926;
+        float angleRadians = 0.008f * (M_PI / 180.0f);// 将角度转换为弧度
+        float cosAngle = cos(angleRadians);
+        float sinAngle = sin(angleRadians);
+
+        float3 center_offset = {0, 0, 0};
+
+        auto pos = DATA_VALUE(pos, p_i) - center_offset;
+        DATA_VALUE(pos, p_i).x = pos.x * cosAngle - pos.z * sinAngle + center_offset.x;
+        DATA_VALUE(pos, p_i).z = pos.x * sinAngle + pos.z * cosAngle + center_offset.z;
+    }
 }
 
 /**
@@ -1346,7 +1365,7 @@ namespace VT_Physics::mct {
         clear_phase_acc_cuda<<<h_data->block_num, h_data->thread_num>>>(
                 d_data, d_nsParams);
 
-        add_phase_adhesion_acc_cuda<<<h_data->block_num, h_data->thread_num>>>(
+        add_adhesion_acc_cuda<<<h_data->block_num, h_data->thread_num>>>(
                 d_data, d_nsConfig, d_nsParams);
 
         distribute_acc_pressure_2_phase_cuda<<<h_data->block_num, h_data->thread_num>>>(
@@ -1373,6 +1392,14 @@ namespace VT_Physics::mct {
                  Data *d_data,
                  UGNS::UniformGirdNeighborSearcherParams *d_nsParams) {
         update_color_cuda<<<h_data->block_num, h_data->thread_num>>>(
+                d_data, d_nsParams);
+    }
+
+    __host__ void
+    stir_fan(Data *h_data,
+             Data *d_data,
+             UGNS::UniformGirdNeighborSearcherParams *d_nsParams) {
+        stir_fan_cuda<<<h_data->block_num, h_data->thread_num>>>(
                 d_data, d_nsParams);
     }
 }

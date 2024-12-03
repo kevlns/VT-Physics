@@ -60,7 +60,8 @@ namespace VT_Physics::mct {
     inline const std::set<uint8_t> MCTSolverSupportedMaterials = {
             EPM_FLUID,
             EPM_POROUS,
-            EPM_BOUNDARY
+            EPM_BOUNDARY,
+            EPM_PCR_FAN
     };
 
     class MCTSolver : public Solver {
