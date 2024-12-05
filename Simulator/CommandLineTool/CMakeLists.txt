@@ -1,0 +1,10 @@
+PROJECT(VP-CMD)
+
+INCLUDE_DIRECTORIES(
+        ${VP_SOURCE_ROOT}
+        ${VP_RUNTIME_ROOT}/Include
+        ${VP_CONFIG_ROOT}
+)
+
+ADD_EXECUTABLE(vp SimulatorCMD.cpp)
+TARGET_LINK_LIBRARIES(vp PUBLIC vpmanager)

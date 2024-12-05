@@ -25,6 +25,14 @@ namespace VT_Physics {
         MCT = 4,
     } SolverType;
 
+    inline const std::map<std::string, SolverType> solverTypeMapping = {
+            {"PBF", PBF},
+            {"DFSPH", DFSPH},
+            {"IMM", IMM},
+            {"IMMCT", IMMCT},
+            {"MCT", MCT},
+    };
+
     class Solver {
     public:
         Solver() = default;

@@ -21,6 +21,9 @@ SET(VP_TEMPLATES_ROOT ${VP_SIMULATOR_ROOT}/Templates)
 SET(VP_3RD_ROOT ${VP_SIMULATOR_ROOT}/Thirdparty)
 SET(VP_LIB_ROOT ${VP_SIMULATOR_ROOT}/Library)
 SET(VP_CONFIG_ROOT ${VP_SOURCE_ROOT}/ConfigTemplates)
+SET(VP_BIN_ROOT ${VP_SOURCE_ROOT}/Bin)
+
+SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${VP_BIN_ROOT})
 
 FIND_PACKAGE(OpenMP REQUIRED)
 IF (OpenMP_CXX_FOUND)
@@ -35,4 +38,8 @@ ENDIF ()
 #===================================== Build Components.
 ADD_SUBDIRECTORY(Simulator)
 ADD_SUBDIRECTORY(Examples)
+
+ADD_CUSTOM_TARGET(BUILD_ALL
+    DEPENDS vpda vpjson vplogger vpmodel vpcore vpmanager vpugns vpdfsph vpimmct vpimm vpmct vppbf vp
+)
 

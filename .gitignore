@@ -23,3 +23,6 @@ Simulator/ThirdParty/vcpkg
 
 # gen files
 ConfigTemplates/RealPath.h
+
+# bin
+Bin
