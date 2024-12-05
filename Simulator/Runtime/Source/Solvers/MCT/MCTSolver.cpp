@@ -552,6 +552,7 @@ namespace VT_Physics::mct {
         static const std::vector<int> exportObjectMats =
                 m_configData["EXPORT"]["SolverRequired"]["exportObjectMaterials"].get<std::vector<int>>();
 
+        // NOTE: custom step, not necessary
         if (m_host_data->cur_simTime > 1)
             stir_fan(m_host_data,
                      m_device_data,
@@ -564,6 +565,7 @@ namespace VT_Physics::mct {
                        m_neighborSearcher.m_config_cuData,
                        m_neighborSearcher.m_params_cuData);
 
+        // NOTE: bug step, used with caution
         if (m_configData["MCT"]["Required"]["enablePorous"].get<bool>()) {
             apply_porous_medium(m_host_data,
                                 m_device_data,
