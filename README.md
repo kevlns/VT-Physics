@@ -22,8 +22,8 @@ More topics will be added in the future.
 ### (2) Implemented Techniques
 1. "Position-Based Fluids" (**[2013-TOG. PBF](http://mmacklin.com/pbf_sig_preprint.pdf)**)
 2. "Divergence-Free Smoothed Particle Hydrodynamics" (**[2015-SCA. DFSPH](https://dl.acm.org/doi/abs/10.1145/2786784.2786796)**)
-3. "An Implicitly Stable Mixture Model for Dynamic Multi-fluid Simulations" (**[2023-SIGAsia. IMM](https://dl.acm.org/doi/abs/10.1145/2786784.2786796)**)
-4. "Multiphase Viscoelastic Non-Newtonian Fluid Simulation" (**[2024-CGF. IMM-CT](https://dl.acm.org/doi/abs/10.1145/2786784.2786796)**)
+3. "An Implicitly Stable Mixture Model for Dynamic Multi-fluid Simulations" (**[2023-SIGAsia. IMM](https://dl.acm.org/doi/10.1145/3610548.3618215)**)
+4. "Multiphase Viscoelastic Non-Newtonian Fluid Simulation" (**[2024-CGF. IMM-CT](https://dl.acm.org/doi/10.1111/cgf.15180)**)
 5. ...
 
 ### (3) Recommended Build tool-chain
