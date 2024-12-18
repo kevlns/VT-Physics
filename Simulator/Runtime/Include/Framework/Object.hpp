@@ -29,13 +29,13 @@ namespace VT_Physics {
 
         ObjectTypeComponent *getObjectComponent();
 
-        long long getID() const;
+        virtual long long getID() const;
 
-        void rename(std::string newName);
+        virtual void rename(std::string newName);
 
-        std::string getName() const;
+        virtual std::string getName() const;
 
-        bool update();
+        virtual bool update();
 
         void reset();
 

@@ -55,6 +55,8 @@ namespace VT_Physics {
         static json loadParticleBoxConfigTemplateJson();
 
         static json loadParticleCommonConfigTemplateJson();
+
+        static json loadEmitterConfigTemplateJson();
     };
 
 }

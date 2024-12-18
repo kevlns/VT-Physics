@@ -3,6 +3,7 @@
 #include <string>
 #include <random>
 #include <algorithm>
+#include <omp.h>
 
 #include "Logger/Logger.hpp"
 #include "Model/ExportUtil.hpp"
@@ -213,15 +214,16 @@ namespace VT_Physics::mct {
 
         cudaMemcpy(m_device_data, m_host_data, sizeof(Data), cudaMemcpyHostToDevice);
 
-        m_neighborSearcher.update(m_host_data->pos);
+        for (auto obj: m_attached_objs) {
+            if (obj->getObjectComponent()->getType() == Particle_Emitter) {
+                auto emitterComponent = dynamic_cast<ParticleEmitterComponent *>(obj->getObjectComponent());
+                emitterComponent->attachedPosBuffers = {m_host_data->pos};
+                emitterComponent->attachedEPMBuffers = {m_host_data->mat};
+            }
+        }
 
         init_data(m_host_data,
                   m_device_data);
-
-        prepare_mct(m_host_data,
-                    m_device_data,
-                    m_neighborSearcher.m_config_cuData,
-                    m_neighborSearcher.m_params_cuData);
 
         if (cudaGetLastError() != cudaSuccess) {
             LOG_ERROR("MCTSolver fail to initialize.")
@@ -313,6 +315,13 @@ namespace VT_Physics::mct {
             return false;
         }
 
+        if (obj->getObjectComponent()->getType() == Particle_Emitter &&
+            obj->getObjectComponentConfig()["epmMaterial"].get<int>() != EPM_FLUID) {
+            LOG_ERROR("MCTSolver unsupported emit material.");
+            m_isCrashed = true;
+            return false;
+        }
+
         for (const auto &key: MCTSolverObjectComponentConfigRequiredKeys) {
             if (!obj->getSolverObjectComponentConfig().contains(key)) {
                 LOG_ERROR(
@@ -349,16 +358,38 @@ namespace VT_Physics::mct {
         m_configData["EXPORT"]["SolverRequired"]["exportFlags"].push_back(
                 obj->getSolverObjectComponentConfig()["exportFlag"].get<bool>());
 
+        if (obj->getObjectComponent()->getType() == Particle_Emitter) {
+            auto emitterComponent = dynamic_cast<ParticleEmitterComponent *>(obj->getObjectComponent());
+            emitterComponent->bufferInsertOffset = m_host_pos.size();
+        }
+
         auto pos = obj->getObjectComponent()->getElements();
 
         auto pos_tmp = make_cuFloat3Vec(obj->getObjectComponent()->getElements());
+        if (obj->getObjectComponent()->getType() == Particle_Emitter) {
+            auto _pos = make_cuFloat3(
+                    m_configData["MCT"]["Required"]["simSpaceLB"].get<std::vector<float>>()) +
+                        make_cuFloat3(
+                                m_configData["MCT"]["Required"]["simSpaceSize"].get<std::vector<float>>()) -
+                        make_float3(0.01, 0.01, 0.01);
+            pos_tmp = std::vector<float3>(pos_tmp.size(), _pos);
+        }
+
         auto part_num = pos_tmp.size();
 
-        std::vector<float3> vel_tmp(part_num,
-                                    make_cuFloat3(
-                                            obj->getSolverObjectComponentConfig()["velocityStart"].get<std::vector<float>>()));
+        float3 meta_vel = make_cuFloat3(
+                obj->getSolverObjectComponentConfig()["velocityStart"].get<std::vector<float>>());
+        if (obj->getObjectComponent()->getType() == Particle_Emitter) {
+            auto emitterComponent = dynamic_cast<ParticleEmitterComponent *>(obj->getObjectComponent());
+            meta_vel = emitterComponent->emitDirection * emitterComponent->emitVel +
+                       emitterComponent->emitDirection * emitterComponent->emitAcc * m_host_data->dt;
+        }
+        std::vector<float3> vel_tmp(part_num, meta_vel);
 
-        std::vector<int> mat_tmp(part_num, obj->getObjectComponentConfig()["epmMaterial"].get<int>());
+        auto meta_mat = obj->getObjectComponentConfig()["epmMaterial"].get<int>();
+        if (obj->getObjectComponent()->getType() == Particle_Emitter)
+            meta_mat = EPM_PE_PREPARE;
+        std::vector<int> mat_tmp(part_num, meta_mat);
 
         std::vector<float> vol_frac_tmp(part_num * m_host_data->phase_num);
         std::vector<float> phasePerm_tmp(part_num * m_host_data->phase_num);
@@ -552,6 +583,8 @@ namespace VT_Physics::mct {
         static const std::vector<int> exportObjectMats =
                 m_configData["EXPORT"]["SolverRequired"]["exportObjectMaterials"].get<std::vector<int>>();
 
+        dynamicUpdatingObjects();
+
         // NOTE: custom step, not necessary
         if (m_host_data->cur_simTime > 1)
             stir_fan(m_host_data,
@@ -609,6 +642,25 @@ namespace VT_Physics::mct {
                      m_neighborSearcher.m_config_cuData,
                      m_neighborSearcher.m_params_cuData,
                      m_isCrashed);
+
+        std::vector<float> dens(m_host_data->particle_num);
+        std::vector<float> comp(m_host_data->particle_num);
+        std::vector<float> bf(m_host_data->particle_num);
+        std::vector<float> mass(m_host_data->particle_num);
+        std::vector<int> nsn(m_host_data->particle_num);
+        std::vector<int> ns(m_host_data->particle_num * 60);
+        cudaMemcpy(dens.data(), m_host_data->rest_density, m_host_data->particle_num * sizeof(float),
+                   cudaMemcpyDeviceToHost);
+        cudaMemcpy(comp.data(), m_host_data->compression_ratio, m_host_data->particle_num * sizeof(float),
+                   cudaMemcpyDeviceToHost);
+        cudaMemcpy(bf.data(), m_host_data->delta_compression_ratio, m_host_data->particle_num * sizeof(float),
+                   cudaMemcpyDeviceToHost);
+        cudaMemcpy(mass.data(), m_host_data->mass, m_host_data->particle_num * sizeof(float), cudaMemcpyDeviceToHost);
+        cudaMemcpy(nsn.data(), m_neighborSearcher.m_params_hostData.neighborNum_cuData,
+                   m_host_data->particle_num * sizeof(int), cudaMemcpyDeviceToHost);
+        cudaMemcpy(ns.data(), m_neighborSearcher.m_params_hostData.neighbors_cuData,
+                   m_host_data->particle_num * 60 * sizeof(int), cudaMemcpyDeviceToHost);
+
 
         apply_pressure_acc(m_host_data,
                            m_device_data,
@@ -740,6 +792,17 @@ namespace VT_Physics::mct {
                 m_device_data,
                 m_neighborSearcher_digging.m_config_cuData,
                 m_neighborSearcher_digging.m_params_cuData);
+    }
+
+    void MCTSolver::dynamicUpdatingObjects() {
+#ifdef VP_TURN_ON_OMP
+#pragma omp parallel for
+        for (int i = 0; i < m_attached_objs.size(); ++i)
+            m_attached_objs[i]->getObjectComponent()->dynamicUpdate(m_host_data->cur_simTime);
+#else
+        for (auto &obj: m_attached_objs)
+            obj->getObjectComponent()->dynamicUpdate(m_host_data->cur_simTime);
+#endif
     }
 
 }

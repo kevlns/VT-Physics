@@ -1,5 +1,7 @@
 #include "Framework/ObjectComponents.hpp"
 
+#include "Core/Math/DataStructTransfer.hpp"
+
 namespace VT_Physics {
 
     /**
@@ -13,6 +15,10 @@ namespace VT_Physics {
 
     void ObjectTypeComponent::update(json &config) {}
 
+    void ObjectTypeComponent::dynamicUpdate(float time) {}
+
+    void ObjectTypeComponent::destroy() {}
+
     std::vector<float> ObjectTypeComponent::getElements() { return {}; }
     // ====================================================================================
 
@@ -21,6 +27,201 @@ auto ret = new type();\
     memcpy_s(ret, sizeof(type), \
     this, sizeof(type)); \
     return static_cast<ObjectTypeComponent *>(ret);
+
+    /**
+     * ParticleEmitterComponent impl ===========================================================
+     */
+    ObjectType ParticleEmitterComponent::getType() const {
+        return m_type;
+    }
+
+    ObjectTypeComponent *ParticleEmitterComponent::clone() const {
+        FILL_CLONE(ParticleEmitterComponent);
+    }
+
+    json ParticleEmitterComponent::getConfig() {
+        json ret = {
+                {"epmMaterial",               epmMaterial},
+                {"particleRadius",            particleRadius},
+                {"agentParticleGeometryFile", agentParticleGeometryFile},
+                {"agentEmitDirectionFile",    agentEmitDirectionFile},
+                {"emitDirection",             {emitDirection.x, emitDirection.y, emitDirection.z}},
+                {"emitVel",                   emitVel},
+                {"emitAcc",                   emitAcc},
+                {"emitParticleMaxNum",        emitParticleMaxNum},
+                {"emitOnCudaDevice",          emitOnCudaDevice}
+        };
+        return ret;
+    }
+
+    void ParticleEmitterComponent::update(json &config) {
+        if (configIsComplete(config)) {
+            if (config.contains("epmMaterial"))
+                epmMaterial = config["epmMaterial"];
+            particleRadius = config["particleRadius"].get<float>();
+            emitDirection = make_cuFloat3(config["emitDirection"].get<std::vector<float>>());
+            agentParticleGeometryFile = config["agentParticleGeometryFile"].get<std::string>();
+            agentEmitDirectionFile = config["agentEmitDirectionFile"].get<std::string>();
+            emitDirection = make_cuFloat3(config["emitDirection"].get<std::vector<float>>());
+            emitVel = config["emitVel"].get<float>();
+            emitAcc = config["emitAcc"].get<float>();
+            emitStartTime = config["emitStartTime"].get<float>();
+            emitParticleMaxNum = config["emitParticleMaxNum"].get<unsigned>();
+            emitGapScaleFactor = config["emitGapScaleFactor"].get<float>();
+            emitOnCudaDevice = config["emitOnCudaDevice"].get<bool>();
+            config["genType"] = 0;
+            config["particleGeometryPath"] = agentParticleGeometryFile;
+            auto agent_pos = ModelHandler::generateObjectElements(config);
+            if (!agentEmitDirectionFile.empty())
+                emitDirection = ModelHandler::loadEmitterAgentNormal(agentEmitDirectionFile);
+            if (length(emitDirection) <= 0) {
+                LOG_INFO("No emit direction provided, using default direction: {0, -1, 0}.");
+                emitDirection = {0, -1, 0};
+            }
+
+            if (emitVel <= 0) {
+                LOG_INFO("No emit velocity provided, using default velocity: 1.");
+                emitVel = 1;
+            }
+
+            if (emitGapScaleFactor < 1) {
+                LOG_INFO("Emit gap scale factor should be greater than 1, using default value: 1.");
+                emitGapScaleFactor = 1;
+            }
+
+            emitGap = (particleRadius * 2.f * emitGapScaleFactor) / emitVel;
+            templateParticleNum = agent_pos.size();
+            std::vector<int> epm(templateParticleNum, epmMaterial);
+            if (emitOnCudaDevice) {
+                cudaMalloc((void **) &templatePos, templateParticleNum * sizeof(float3));
+                cudaMemcpy(templatePos, agent_pos.data(), templateParticleNum * sizeof(float3), cudaMemcpyHostToDevice);
+
+                cudaMalloc((void **) &templateEPM, templateParticleNum * sizeof(int));
+                cudaMemcpy(templateEPM, epm.data(), templateParticleNum * sizeof(int), cudaMemcpyHostToDevice);
+            } else {
+                templatePos = new float3[templateParticleNum];
+                memcpy_s(templatePos, templateParticleNum * sizeof(float3), agent_pos.data(),
+                         templateParticleNum * sizeof(float3));
+
+                templateEPM = new int[templateParticleNum];
+                memcpy_s(templateEPM, templateParticleNum * sizeof(int), epm.data(),
+                         templateParticleNum * sizeof(int));
+            }
+
+            pos = std::vector<float3>(emitParticleMaxNum, {0, 0, 0});
+
+            LOG_INFO("ParticleEmitterComponent config updated.");
+        }
+    }
+
+    void ParticleEmitterComponent::dynamicUpdate(float simTime) {
+        if ((simTime - emitStartTime) < emitGap * emitTimes ||
+            emittedParticleNum + templateParticleNum > emitParticleMaxNum)
+            return;
+
+        if (emitOnCudaDevice) {
+            if (!attachedPosBuffers.empty()) {
+                for (auto buffer: attachedPosBuffers) {
+                    cudaMemcpy(buffer + bufferInsertOffset,
+                               templatePos, templateParticleNum * sizeof(float3),
+                               cudaMemcpyDeviceToDevice);
+                }
+            }
+
+            if (!attachedEPMBuffers.empty()) {
+                for (auto buffer: attachedEPMBuffers) {
+                    cudaMemcpy(buffer + bufferInsertOffset,
+                               templateEPM, templateParticleNum * sizeof(int),
+                               cudaMemcpyDeviceToDevice);
+                }
+            }
+        } else {
+            if (!attachedPosBuffers.empty()) {
+                for (auto buffer: attachedPosBuffers)
+                    memcpy_s(buffer + bufferInsertOffset, templateParticleNum * sizeof(float3),
+                             templatePos, templateParticleNum * sizeof(float3));
+            }
+
+            if (!attachedEPMBuffers.empty()) {
+                for (auto buffer: attachedEPMBuffers)
+                    memcpy_s(buffer + bufferInsertOffset, templateParticleNum * sizeof(int),
+                             templateEPM, templateParticleNum * sizeof(int));
+            }
+        }
+
+        emitTimes++;
+        emittedParticleNum += templateParticleNum;
+        bufferInsertOffset += templateParticleNum;
+    }
+
+    void ParticleEmitterComponent::destroy() {
+        if (emitOnCudaDevice) {
+            if (templatePos)
+                cudaFree(templatePos);
+            if (templateEPM)
+                cudaFree(templateEPM);
+        } else {
+            if (templatePos)
+                delete[] templatePos;
+            if (templateEPM)
+                delete[] templateEPM;
+        }
+    }
+
+    std::vector<float> ParticleEmitterComponent::getElements() {
+        auto pos_fptr = reinterpret_cast<float *>(pos.data());
+        auto size = pos.size();
+        auto ret = std::vector<float>(pos_fptr, pos_fptr + 3 * size);
+        return std::move(ret);
+    }
+
+    bool ParticleEmitterComponent::configIsComplete(json &config) {
+        bool ret = true;
+        if (!config.contains("particleRadius")) {
+            LOG_ERROR("ParticleEmitterComponent config missing key: particleRadius");
+            ret = false;
+        }
+        if (!config.contains("epmMaterial")) LOG_WARNING("ParticleEmitterComponent config missing key: epmMaterial");
+        if (!config.contains("agentParticleGeometryFile")) {
+            LOG_ERROR("ParticleEmitterComponent config missing key: agentParticleGeometryFile");
+            ret = false;
+        }
+        if (!config.contains("agentEmitDirectionFile")) {
+            LOG_ERROR("ParticleEmitterComponent config missing key: agentEmitDirectionFile");
+            ret = false;
+        }
+        if (!config.contains("emitDirection")) {
+            LOG_ERROR("ParticleEmitterComponent config missing key: emitDirection");
+            ret = false;
+        }
+        if (!config.contains("emitVel")) {
+            LOG_ERROR("ParticleEmitterComponent config missing key: emitVel");
+            ret = false;
+        }
+        if (!config.contains("emitAcc")) {
+            LOG_ERROR("ParticleEmitterComponent config missing key: emitAcc");
+            ret = false;
+        }
+        if (!config.contains("emitStartTime")) {
+            LOG_ERROR("ParticleEmitterComponent config missing key: emitStartTime");
+            ret = false;
+        }
+        if (!config.contains("emitParticleMaxNum")) {
+            LOG_ERROR("ParticleEmitterComponent config missing key: emitParticleMaxNum");
+            ret = false;
+        }
+        if (!config.contains("emitOnCudaDevice")) {
+            LOG_ERROR("ParticleEmitterComponent config missing key: emitOnCudaDevice");
+            ret = false;
+        }
+        if (!config.contains("emitGapScaleFactor")) {
+            LOG_ERROR("ParticleEmitterComponent config missing key: emitGapScaleFactor");
+            ret = false;
+        }
+        return ret;
+    }
+    // ====================================================================================
+
 
     /**
      * ParticleGeometryComponent impl ===========================================================

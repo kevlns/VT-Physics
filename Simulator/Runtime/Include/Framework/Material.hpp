@@ -18,6 +18,7 @@ namespace VT_Physics {
 
         epm_ProgramControlledRigidFan = 10,
 
+        epm_EmittingPrepare = 99999,
         epm_Null = INT_MAX
     } ParticleMaterial;
 
@@ -25,12 +26,14 @@ namespace VT_Physics {
 #define EPM_BOUNDARY static_cast<int>(ParticleMaterial::epm_Boundary)
 #define EPM_POROUS static_cast<int>(ParticleMaterial::epm_Porous)
 #define EPM_PCR_FAN static_cast<int>(ParticleMaterial::epm_ProgramControlledRigidFan)
+#define EPM_PE_PREPARE static_cast<int>(ParticleMaterial::epm_EmittingPrepare)
 
     inline const std::unordered_map<int, std::string> EPMString = {
             {EPM_FLUID,    "Fluid"},
             {EPM_BOUNDARY, "Boundary"},
             {EPM_POROUS,   "Porous"},
             {EPM_PCR_FAN,  "PCR_Fan"},
+            {EPM_PE_PREPARE,  "EmittedParticles"},
     };
 }
 

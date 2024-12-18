@@ -109,7 +109,7 @@ namespace VT_Physics::mct {
         }
 
         __syncthreads();
-        if (DATA_VALUE(mat, p_i) != EPM_FLUID) {
+        if (DATA_VALUE(mat, p_i) == EPM_POROUS) {
             FOR_EACH_NEIGHBOR_Pj() {
                 if (DATA_VALUE(mat, p_j) == EPM_FLUID &&
                     DATA_VALUE(rest_density, p_i) < DATA_VALUE(rest_density, p_j)) {
@@ -135,12 +135,12 @@ namespace VT_Physics::mct {
 
         auto pos_i = DATA_VALUE(pos, p_i);
         FOR_EACH_NEIGHBOR_Pj() {
-//            if (DATA_VALUE(mat, p_j) == Emitter_Particle)
-//                continue;
+            if (DATA_VALUE(mat, p_j) == EPM_PE_PREPARE)
+                continue;
 
             auto pos_j = DATA_VALUE(pos, p_j);
 
-            DATA_VALUE(compression_ratio, p_i) += DATA_VALUE(volume, p_j) * CUBIC_KERNEL_VALUE();
+            DATA_VALUE(compression_ratio, p_i) += CUBIC_KERNEL_VALUE() * DATA_VALUE(volume, p_j);
         }
     }
 
@@ -155,8 +155,8 @@ namespace VT_Physics::mct {
 
         auto pos_i = DATA_VALUE(pos, p_i);
         FOR_EACH_NEIGHBOR_Pj() {
-//            if (p_j == p_i || DATA_VALUE(mat, p_j) == Emitter_Particle)
-//                continue;
+            if (p_j == p_i || DATA_VALUE(mat, p_j) == EPM_PE_PREPARE)
+                continue;
 
             auto pos_j = DATA_VALUE(pos, p_j);
             auto wGrad = CUBIC_KERNEL_GRAD();
@@ -204,8 +204,8 @@ namespace VT_Physics::mct {
         auto pos_i = DATA_VALUE(pos, p_i);
         auto vel_adv_i = DATA_VALUE(vel_adv, p_i);
         FOR_EACH_NEIGHBOR_Pj() {
-//            if (p_j == p_i || DATA_VALUE(mat, p_j) == Emitter_Particle)
-//                continue;
+            if (p_j == p_i || DATA_VALUE(mat, p_j) == EPM_PE_PREPARE)
+                continue;
 
             auto pos_j = DATA_VALUE(pos, p_j);
             auto vel_adv_j = DATA_VALUE(vel_adv, p_j);
@@ -247,8 +247,8 @@ namespace VT_Physics::mct {
 
         auto pos_i = DATA_VALUE(pos, p_i);
         FOR_EACH_NEIGHBOR_Pj() {
-//            if (p_j == p_i || DATA_VALUE(mat, p_j) == Emitter_Particle)
-//                continue;
+            if (p_j == p_i || DATA_VALUE(mat, p_j) == EPM_PE_PREPARE)
+                continue;
 
             auto pos_j = DATA_VALUE(pos, p_j);
             auto wGrad = CUBIC_KERNEL_GRAD();
@@ -426,8 +426,8 @@ namespace VT_Physics::mct {
 
         auto pos_i = DATA_VALUE(pos, p_i);
         FOR_EACH_NEIGHBOR_Pj() {
-//            if (p_j == p_i || DATA_VALUE(mat, p_j) == Emitter_Particle)
-//                continue;
+            if (p_j == p_i || DATA_VALUE(mat, p_j) == EPM_PE_PREPARE)
+                continue;
 
             auto pos_j = DATA_VALUE(pos, p_j);
             auto wGrad = CUBIC_KERNEL_GRAD();
@@ -922,14 +922,18 @@ namespace VT_Physics::mct {
                              UGNS::UniformGirdNeighborSearcherParams *d_nsParams) {
         CHECK_THREAD();
 
-        if (DATA_VALUE(mat, p_i) == EPM_FLUID)
+        if (DATA_VALUE(mat, p_i) == EPM_FLUID || DATA_VALUE(mat, p_i) == EPM_PE_PREPARE)
             return;
 
         auto pos_i = DATA_VALUE(pos, p_i);
         DATA_VALUE(rigid_raw_volume, p_i) = 0;
         float delta = 0;
+        float delta_rigid = 0;
         FOR_EACH_NEIGHBOR_Pj() {
             auto pos_j = DATA_VALUE(pos, p_j);
+
+            if (DATA_VALUE(mat, p_j) == DATA_VALUE(mat, p_i))
+                delta_rigid += CUBIC_KERNEL_VALUE();
 
             delta += CUBIC_KERNEL_VALUE();
 
@@ -942,29 +946,36 @@ namespace VT_Physics::mct {
 
         DATA_VALUE(rest_volume_rate, p_i) = delta;
         DATA_VALUE(volume, p_i) = 1 / delta * (1 - DATA_VALUE(porosity, p_i)) * (1 - DATA_VALUE(saturation, p_i));
+
+        if (DATA_VALUE(mat, p_i) == EPM_BOUNDARY) {
+            DATA_VALUE(rest_volume_rate, p_i) = delta_rigid;
+            DATA_VALUE(volume, p_i) = 1 / delta;
+        }
     }
 
     __global__ void
-    add_adhesion_acc_cuda(Data *d_data,
-                          UGNS::UniformGirdNeighborSearcherConfig *d_nsConfig,
-                          UGNS::UniformGirdNeighborSearcherParams *d_nsParams) {
+    add_adhesion_effect_on_phase_cuda(Data *d_data,
+                                      UGNS::UniformGirdNeighborSearcherConfig *d_nsConfig,
+                                      UGNS::UniformGirdNeighborSearcherParams *d_nsParams) {
         CHECK_THREAD();
 
         if (DATA_VALUE(mat, p_i) != EPM_FLUID)
             return;
 
-        DATA_VALUE(acc, p_i) *= 0;
+        float delta = 0;
         auto pos_i = DATA_VALUE(pos, p_i);
         FOR_EACH_NEIGHBOR_Pj() {
             if (DATA_VALUE(mat, p_j) != EPM_BOUNDARY)
                 continue;
 
             auto pos_j = DATA_VALUE(pos, p_j);
+            delta += DATA_VALUE(volume, p_j) * CUBIC_KERNEL_VALUE();
+        }
 
-            auto v_ji = DATA_VALUE(vel, p_j) - DATA_VALUE(vel, p_i);
-            DATA_VALUE(acc, p_i) +=
-                    CONST_VALUE(bound_vis_factor) * (v_ji * CONST_VALUE(fPart_rest_volume) * CUBIC_KERNEL_VALUE()) /
-                    CONST_VALUE(dt);
+        if (delta > 0.5) {
+            FOR_EACH_PHASE_k() {
+                DATA_VALUE_PHASE(vel_phase, p_i, k) *= (1 - CONST_VALUE(bound_vis_factor));
+            }
         }
     }
 
@@ -1025,20 +1036,13 @@ namespace VT_Physics::mct {
     }
 
     __host__ void
-    prepare_mct(Data *h_data,
-                Data *d_data,
-                UGNS::UniformGirdNeighborSearcherConfig *d_nsConfig,
-                UGNS::UniformGirdNeighborSearcherParams *d_nsParams) {
-
-        update_rest_density_and_mass_cuda<<<h_data->block_num, h_data->thread_num>>>(
-                d_data, d_nsConfig, d_nsParams);
-    }
-
-    __host__ void
     sph_precompute(Data *h_data,
                    Data *d_data,
                    UGNS::UniformGirdNeighborSearcherConfig *d_nsConfig,
                    UGNS::UniformGirdNeighborSearcherParams *d_nsParams) {
+        update_rest_density_and_mass_cuda<<<h_data->block_num, h_data->thread_num>>>(
+                d_data, d_nsConfig, d_nsParams);
+
         check_fPart_state_cuda<<<h_data->block_num, h_data->thread_num>>>(
                 d_data, d_nsConfig, d_nsParams);
 
@@ -1365,14 +1369,8 @@ namespace VT_Physics::mct {
         clear_phase_acc_cuda<<<h_data->block_num, h_data->thread_num>>>(
                 d_data, d_nsParams);
 
-        add_adhesion_acc_cuda<<<h_data->block_num, h_data->thread_num>>>(
+        add_adhesion_effect_on_phase_cuda<<<h_data->block_num, h_data->thread_num>>>(
                 d_data, d_nsConfig, d_nsParams);
-
-        distribute_acc_pressure_2_phase_cuda<<<h_data->block_num, h_data->thread_num>>>(
-                d_data, d_nsParams);
-
-        phase_acc_2_phase_vel_cuda<<<h_data->block_num, h_data->thread_num>>>(
-                d_data, d_nsParams);
 
         update_vel_from_phase_vel_cuda<<<h_data->block_num, h_data->thread_num>>>(
                 d_data, d_nsParams);

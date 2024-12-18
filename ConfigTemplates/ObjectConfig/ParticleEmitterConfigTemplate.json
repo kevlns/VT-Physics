@@ -1,0 +1,14 @@
+{
+  "objTransferType"          : 6,
+  "epmMaterial"              : 255,
+  "particleRadius"           : 0.05,
+  "agentParticleGeometryFile": "",
+  "agentEmitDirectionFile"   : "",
+  "emitDirection"            : [0, -1, 0],
+  "emitVel"                  : 0,
+  "emitAcc"                  : 0,
+  "emitStartTime"            : 0,
+  "emitParticleMaxNum"       : 5000,
+  "emitGapScaleFactor"       : 1,
+  "emitOnCudaDevice"         : false
+}

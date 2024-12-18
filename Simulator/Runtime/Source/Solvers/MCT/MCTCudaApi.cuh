@@ -17,12 +17,6 @@ namespace VT_Physics::mct {
               Data *d_data);
 
     __host__ void
-    prepare_mct(Data *h_data,
-                Data *d_data,
-                UGNS::UniformGirdNeighborSearcherConfig *d_nsConfig,
-                UGNS::UniformGirdNeighborSearcherParams *d_nsParams);
-
-    __host__ void
     sph_precompute(Data *h_data,
                    Data *d_data,
                    UGNS::UniformGirdNeighborSearcherConfig *d_nsConfig,

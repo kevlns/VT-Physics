@@ -22,6 +22,7 @@ namespace VT_Physics {
         Particle_Cylinder = 3,
         Particle_Plane = 4,
         Particle_Box = 5,
+        Particle_Emitter = 6,
 
         MeshGeometry = 20,
         Mesh_Sphere = 21,
@@ -42,7 +43,62 @@ namespace VT_Physics {
 
         virtual void update(json &config) = 0;
 
+        virtual void dynamicUpdate(float time);
+
+        virtual void destroy();
+
         virtual std::vector<float> getElements() = 0;
+    };
+
+    struct ParticleEmitterComponent : public ObjectTypeComponent {
+        // TODO
+        //        float3 massCenter{0, 0, 0};
+        //        float3 geoCenter{0, 0, 0};
+        std::vector<float3> pos;
+        float particleRadius{0.05f};
+        uint8_t epmMaterial{UINT8_MAX};
+        std::string agentParticleGeometryFile;
+        std::string agentEmitDirectionFile;
+        float3 emitDirection{0, 0, 0};
+        float emitVel{0};
+        float emitAcc{0};
+        float emitStartTime{0};
+        unsigned emitParticleMaxNum{0};
+        bool emitOnCudaDevice{false};
+
+        float emitGap{0};
+        float emitGapScaleFactor{1};
+        float3 *templatePos{nullptr};
+        int *templateEPM{nullptr};
+        unsigned templateParticleNum{0};
+        unsigned emittedParticleNum{0};
+        unsigned emitTimes{0};
+
+        std::vector<float3 *> attachedPosBuffers;
+        std::vector<float3 *> attachedVelBuffers;
+        std::vector<float3 *> attachedAccBuffers;
+        std::vector<int *> attachedEPMBuffers;
+        unsigned bufferInsertOffset{0};
+
+        ObjectType getType() const override;
+
+        ObjectTypeComponent *clone() const override;
+
+        json getConfig() override;
+
+        void update(json &config) override;
+
+        void dynamicUpdate(float simTime) override;
+
+        void destroy() override;
+
+        std::vector<float> getElements() override;
+
+    private:
+        bool configIsComplete(json &config);
+
+    private:
+        const ObjectType m_type = ObjectType::Particle_Emitter;
     };
 
     struct ParticleGeometryComponent : public ObjectTypeComponent {
@@ -197,6 +253,7 @@ namespace VT_Physics {
             new ParticleCylinderComponent(),
             new ParticlePlaneComponent(),
             new ParticleBoxComponent(),
+            new ParticleEmitterComponent(),
 
             new MeshGeometryComponent(),
     };

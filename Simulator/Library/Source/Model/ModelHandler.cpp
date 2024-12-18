@@ -7,6 +7,7 @@
 #include "assimp/Importer.hpp"
 #include "assimp/postprocess.h"
 #include "assimp/scene.h"
+#include "Core/Math/helper_math_cu11.6.h"
 
 namespace VT_Physics {
 
@@ -46,6 +47,25 @@ namespace VT_Physics {
         };
 
         return ret;
+    }
+
+    float3 ModelHandler::loadEmitterAgentNormal(const std::string &agent_file) {
+        Assimp::Importer importer;
+        const aiScene *scene = importer.ReadFile(agent_file, aiProcess_Triangulate);
+
+        if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
+            std::cerr << "ERROR::ASSIMP::" << importer.GetErrorString() << std::endl;
+            return {};
+        }
+
+        for (unsigned int m = 0; m < scene->mNumMeshes; m++) {
+            const aiMesh *mesh = scene->mMeshes[m];
+            for (unsigned int v = 0; v < mesh->mNumVertices; v++) {
+                const aiVector3D &normal = mesh->mNormals[v];
+                float3 _normal = {normal.x, normal.y, normal.z};
+                return normalize(_normal);
+            }
+        }
     }
 
     std::vector<float3> ModelHandler::generateParticleCubeElements(json config) {

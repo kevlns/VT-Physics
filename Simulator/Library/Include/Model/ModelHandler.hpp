@@ -17,6 +17,8 @@ namespace VT_Physics {
     public:
         static std::vector<float3> generateObjectElements(json config);
 
+        static float3 loadEmitterAgentNormal(const std::string &agent_file);
+
     private:
         static std::vector<float3> loadObjectElements(json config);
 

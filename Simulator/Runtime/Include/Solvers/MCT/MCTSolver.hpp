@@ -100,6 +100,8 @@ namespace VT_Physics::mct {
         virtual bool checkConfig() const override;
 
     private:
+        virtual void dynamicUpdatingObjects();
+
         void exportData();
 
         void generateMiners(std::vector<int> &fParts, int minerNum);

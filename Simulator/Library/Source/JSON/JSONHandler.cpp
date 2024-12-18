@@ -104,4 +104,8 @@ namespace VT_Physics {
         return loadJson(std::string(VP_CONFIG_DIR) + "MCTSolver/MCTSolverObjectComponentConfigTemplate.json");
     }
 
+    json JsonHandler::loadEmitterConfigTemplateJson() {
+        return loadJson(std::string(VP_CONFIG_DIR) + "ObjectConfig/MCTSolverObjectComponentConfigTemplate.json");
+    }
+
 }

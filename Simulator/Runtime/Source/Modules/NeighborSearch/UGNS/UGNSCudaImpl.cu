@@ -119,6 +119,7 @@ namespace VT_Physics::UGNS {
             uint32_t cellId = getCellId(cellPos, gridSize);
             dPARAMS(cellIndices_cuData, i) = cellId;
             dPARAMS(particleIndices_cuData, i) = i;
+            dPARAMS(particleIsAlive_cuData, i) = true;
         } else {
             dPARAMS(particleIsAlive_cuData, i) = false;
         }

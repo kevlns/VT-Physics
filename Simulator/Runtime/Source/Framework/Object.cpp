@@ -44,6 +44,7 @@ namespace VT_Physics {
         m_objectComponentConfig.clear();
         m_solverSpecificComponentConfig.clear();
         if (m_objectTypeComponent) {
+            m_objectTypeComponent->destroy();
             delete m_objectTypeComponent;
             m_objectTypeComponent = nullptr;
         }
