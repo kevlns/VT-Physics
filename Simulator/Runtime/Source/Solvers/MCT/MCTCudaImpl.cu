@@ -972,7 +972,7 @@ namespace VT_Physics::mct {
             delta += DATA_VALUE(volume, p_j) * CUBIC_KERNEL_VALUE();
         }
 
-        if (delta > 0.5) {
+        if (delta > 0.01) {
             FOR_EACH_PHASE_k() {
                 DATA_VALUE_PHASE(vel_phase, p_i, k) *= (1 - CONST_VALUE(bound_vis_factor));
             }
