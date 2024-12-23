@@ -619,11 +619,6 @@ namespace VT_Physics::mct {
                            m_device_data,
                            m_neighborSearcher.m_params_cuData);
 
-        apply_adhesion_force(m_host_data,
-                             m_device_data,
-                             m_neighborSearcher.m_config_cuData,
-                             m_neighborSearcher.m_params_cuData);
-
         mct_gravity_surface(m_host_data,
                             m_device_data,
                             m_neighborSearcher.m_config_cuData,
@@ -643,28 +638,14 @@ namespace VT_Physics::mct {
                      m_neighborSearcher.m_params_cuData,
                      m_isCrashed);
 
-        std::vector<float> dens(m_host_data->particle_num);
-        std::vector<float> comp(m_host_data->particle_num);
-        std::vector<float> bf(m_host_data->particle_num);
-        std::vector<float> mass(m_host_data->particle_num);
-        std::vector<int> nsn(m_host_data->particle_num);
-        std::vector<int> ns(m_host_data->particle_num * 60);
-        cudaMemcpy(dens.data(), m_host_data->rest_density, m_host_data->particle_num * sizeof(float),
-                   cudaMemcpyDeviceToHost);
-        cudaMemcpy(comp.data(), m_host_data->compression_ratio, m_host_data->particle_num * sizeof(float),
-                   cudaMemcpyDeviceToHost);
-        cudaMemcpy(bf.data(), m_host_data->delta_compression_ratio, m_host_data->particle_num * sizeof(float),
-                   cudaMemcpyDeviceToHost);
-        cudaMemcpy(mass.data(), m_host_data->mass, m_host_data->particle_num * sizeof(float), cudaMemcpyDeviceToHost);
-        cudaMemcpy(nsn.data(), m_neighborSearcher.m_params_hostData.neighborNum_cuData,
-                   m_host_data->particle_num * sizeof(int), cudaMemcpyDeviceToHost);
-        cudaMemcpy(ns.data(), m_neighborSearcher.m_params_hostData.neighbors_cuData,
-                   m_host_data->particle_num * 60 * sizeof(int), cudaMemcpyDeviceToHost);
-
-
         apply_pressure_acc(m_host_data,
                            m_device_data,
                            m_neighborSearcher.m_params_cuData);
+
+        apply_adhesion_force(m_host_data,
+                             m_device_data,
+                             m_neighborSearcher.m_config_cuData,
+                             m_neighborSearcher.m_params_cuData);
 
         update_pos(m_host_data,
                    m_device_data,

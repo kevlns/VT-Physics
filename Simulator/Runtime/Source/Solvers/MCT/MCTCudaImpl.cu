@@ -328,7 +328,13 @@ namespace VT_Physics::mct {
         float3 acc = {0, 0, 0};
         float gamma = CONST_VALUE(surface_tension_coefficient);
         auto pos_i = DATA_VALUE(pos, p_i);
+        float delta = 0;
         FOR_EACH_NEIGHBOR_Pj() {
+            if(DATA_VALUE(mat, p_j) == EPM_BOUNDARY){
+                auto pos_j = DATA_VALUE(pos, p_j);
+                delta += DATA_VALUE(volume, p_j) * CUBIC_KERNEL_VALUE();
+            }
+
             if (DATA_VALUE(mat, p_j) != DATA_VALUE(mat, p_i) || p_j == p_i)
                 continue;
 
@@ -344,6 +350,9 @@ namespace VT_Physics::mct {
 
             acc += k * (acc_1 + acc_2);
         }
+
+        if(delta > 0.005)
+            acc *= 0.001;
 
         FOR_EACH_PHASE_k() {
             DATA_VALUE_PHASE(acc_phase, p_i, k) += acc;
@@ -972,7 +981,7 @@ namespace VT_Physics::mct {
             delta += DATA_VALUE(volume, p_j) * CUBIC_KERNEL_VALUE();
         }
 
-        if (delta > 0.01) {
+        if (delta > 0.005) {
             FOR_EACH_PHASE_k() {
                 DATA_VALUE_PHASE(vel_phase, p_i, k) *= (1 - CONST_VALUE(bound_vis_factor));
             }
