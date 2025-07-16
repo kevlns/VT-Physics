@@ -10,6 +10,7 @@
 namespace VT_Physics::dfsph {
 
     DFSPHSolver::DFSPHSolver(uint32_t cudaThreadSize) {
+        printf("114514");
         m_configData = JsonHandler::loadDFSPHConfigTemplateJson();
         m_host_data = new Data();
         m_host_data->thread_num = cudaThreadSize;
